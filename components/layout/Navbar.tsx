@@ -139,13 +139,25 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-              <Link
-                href="/inscription"
-                className="bg-accent-orange text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-green-600 transition-colors shadow-lg shadow-green-500/25"
-              >
-                {lang === 'fr' ? "S'inscrire" : 'Register'}
-              </Link>
-            )}
+  <div className="flex items-center gap-2">
+    <Link
+      href="/login"
+      className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
+        scrolled
+          ? 'text-primary-900 hover:bg-primary-50 border border-primary-900'
+          : 'text-white hover:bg-white/10 border border-white/30'
+      }`}
+    >
+      {lang === 'fr' ? 'Se connecter' : 'Login'}
+    </Link>
+    <Link
+      href="/inscription"
+      className="bg-accent-orange text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-amber-500 transition-colors"
+    >
+      {lang === 'fr' ? "S'inscrire" : 'Register'}
+    </Link>
+  </div>
+)}
 
             {/* Mobile menu */}
             <button
