@@ -1,7 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/react' // ← AJOUTÉ
+import { Analytics } from "@vercel/analytics/next"
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import Navbar from '@/components/layout/Navbar'
@@ -76,8 +76,6 @@ export default function RootLayout({
             }}
           />
         </QueryProvider>
-        {/* ← VERCEL ANALYTICS (POSITION PARFAITE) */}
-        <Analytics />
       </body>
     </html>
   )
