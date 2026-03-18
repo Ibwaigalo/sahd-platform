@@ -75,6 +75,7 @@ export default function RootLayout({
               error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
             }}
           />
+          <Analytics />
         </QueryProvider>
       </body>
     </html>
