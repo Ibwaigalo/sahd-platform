@@ -38,7 +38,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section
         className="relative min-h-screen flex items-center overflow-hidden w-full"
-        style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&h=1080&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=1080&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(11,24,95,0.95) 0%, rgba(11,24,95,0.80) 60%, rgba(254,166,33,0.20) 100%)' }} />
         <div className="relative w-full max-w-7xl mx-auto px-4 pt-20 md:pt-32 pb-16">
