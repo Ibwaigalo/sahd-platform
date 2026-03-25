@@ -303,8 +303,8 @@ export const mockSponsors = {
 export const contactSponsoring = {
   name: 'Aminata HAIDARA',
   title: 'Responsable Partenariats & Sponsoring – SAHD 2026',
-  phone: '+223 74 43 48 81',
-  whatsapp: '+223 74 43 48 81',
+  phone: '+223 94 74 94 94',
+  whatsapp: '+223 94 74 94 94',
   email: 'sponsoring@sahd-mali.org',
   email2: 'contact@sahd-mali.org',
   address: 'Bamako, Mali',
