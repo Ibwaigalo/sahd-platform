@@ -109,26 +109,56 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Africa Images Gallery */}
+      {/* Crisis Context */}
       <section className="py-16 md:py-24 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 md:mb-16">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12 md:mb-16">
             <p className="text-accent-orange font-bold text-xs uppercase tracking-widest mb-3">
-              {lang === 'fr' ? 'L\'action humanitarian au Mali' : 'Humanitarian action in Mali'}
+              {lang === 'fr' ? 'Contexte de crise' : 'Crisis context'}
             </p>
             <h2 className="text-2xl md:text-4xl font-black text-primary-900 mb-4">
-              {lang === 'fr' ? 'L\'Afrique en action' : 'Africa in action'}
+              {lang === 'fr' ? 'Le Mali a besoin de solidarité' : 'Mali needs solidarity'}
             </h2>
             <div className="section-divider mx-auto mb-6" />
+            <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+              {lang === 'fr'
+                ? 'Face aux défis humanitaires croissants, le SAHD crée l\'espace de convergence pour les acteurs du développement.'
+                : 'Facing growing humanitarian challenges, SAHD creates the convergence space for development actors.'}
+            </p>
           </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {humanitarianImages.africa.map((img, i) => (
-              <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className={`relative overflow-hidden rounded-2xl ${i === 0 ? 'md:col-span-2' : ''} group`}>
-                <img src={img} alt={`Mali humanitarian action ${i + 1}`} className={`w-full object-cover object-top group-hover:scale-110 transition-transform duration-500 ${i === 0 ? 'h-48 md:h-80' : 'h-48 md:h-64'}`} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
+            {[
+              { icon: '👥', value: '8.8M', label: lang === 'fr' ? 'Personnes dans le besoin' : 'People in need', color: 'from-red-500 to-red-600' },
+              { icon: '🏠', value: '700K+', label: lang === 'fr' ? 'Déplacés internes' : 'Internally displaced', color: 'from-orange-500 to-orange-600' },
+              { icon: '🌾', value: '1.4M', label: lang === 'fr' ? 'En insécurité alimentaire' : 'Food insecure', color: 'from-amber-500 to-amber-600' },
+              { icon: '🏥', value: '2.5M', label: lang === 'fr' ? 'Besoins humanitaires ($)' : 'Humanitarian needs ($)', color: 'from-primary-600 to-primary-700' },
+            ].map((stat, i) => (
+              <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="card-lift">
+                <div className={`bg-gradient-to-br ${stat.color} rounded-2xl p-4 md:p-6 text-white text-center h-full`}>
+                  <div className="text-3xl md:text-4xl mb-2">{stat.icon}</div>
+                  <div className="text-xl md:text-3xl font-black mb-1">{stat.value}</div>
+                  <div className="text-white/80 text-xs md:text-sm">{stat.label}</div>
+                </div>
               </motion.div>
             ))}
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {[...humanitarianImages.volunteers, ...humanitarianImages.crisis].slice(0, 8).map((img, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+                className="relative overflow-hidden rounded-2xl aspect-square group">
+                <img src={img} alt={`Humanitarian action ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link href="/about" className="inline-flex items-center gap-2 bg-primary-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-800 transition-colors">
+              {lang === 'fr' ? 'En savoir plus sur le contexte' : 'Learn more about the context'} <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>
