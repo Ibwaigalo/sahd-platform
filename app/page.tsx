@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Play, Users, ChevronDown } from 'lucide-react'
 import { mockSpeakers, mockPanels, mockSponsors } from '@/lib/mock-data'
+import { humanitarianImages } from '@/lib/humanitarian-images'
 import CountdownTimer from '@/components/ui/CountdownTimer'
 import SponsoringContactCard from '@/components/ui/SponsoringContactCard'
 import { useLang } from '@/lib/lang-context'
@@ -37,7 +38,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section
         className="relative min-h-screen flex items-center overflow-hidden w-full"
-        style={{ backgroundImage: 'url(/hero-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&h=1080&fit=crop)', backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(11,24,95,0.95) 0%, rgba(11,24,95,0.80) 60%, rgba(254,166,33,0.20) 100%)' }} />
         <div className="relative w-full max-w-7xl mx-auto px-4 pt-20 md:pt-32 pb-16">
@@ -105,6 +106,30 @@ export default function HomePage() {
           <Link href="/inscription" className="flex-shrink-0 bg-accent-orange text-white px-6 py-3 rounded-xl font-black hover:bg-amber-500 transition-colors text-sm">
             {lang === 'fr' ? 'Réserver ma place →' : 'Book my seat →'}
           </Link>
+        </div>
+      </section>
+
+      {/* Africa Images Gallery */}
+      <section className="py-16 md:py-24 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 md:mb-16">
+            <p className="text-accent-orange font-bold text-xs uppercase tracking-widest mb-3">
+              {lang === 'fr' ? 'L\'action humanitarian au Mali' : 'Humanitarian action in Mali'}
+            </p>
+            <h2 className="text-2xl md:text-4xl font-black text-primary-900 mb-4">
+              {lang === 'fr' ? 'L\'Afrique en action' : 'Africa in action'}
+            </h2>
+            <div className="section-divider mx-auto mb-6" />
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            {humanitarianImages.africa.map((img, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className={`relative overflow-hidden rounded-2xl ${i === 0 ? 'md:col-span-2 md:row-span-2' : ''} group`}>
+                <img src={img} alt={`Mali humanitarian action ${i + 1}`} className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

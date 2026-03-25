@@ -49,7 +49,7 @@ export default function MediaPage() {
       <div className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-950/95 to-primary-900/95 z-10" />
         <img 
-          src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1920&h=600&fit=crop" 
+          src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&h=600&fit=crop" 
           alt="Mali humanitarian action" 
           className="absolute inset-0 w-full h-full object-cover"
         />
