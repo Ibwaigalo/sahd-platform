@@ -124,8 +124,8 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {humanitarianImages.africa.map((img, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className={`relative overflow-hidden rounded-2xl ${i === 0 ? 'md:col-span-2 md:row-span-2' : ''} group`}>
-                <img src={img} alt={`Mali humanitarian action ${i + 1}`} className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500" />
+                className={`relative overflow-hidden rounded-2xl ${i === 0 ? 'md:col-span-2' : ''} group`}>
+                <img src={img} alt={`Mali humanitarian action ${i + 1}`} className={`w-full object-cover object-top group-hover:scale-110 transition-transform duration-500 ${i === 0 ? 'h-48 md:h-80' : 'h-48 md:h-64'}`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </motion.div>
             ))}
