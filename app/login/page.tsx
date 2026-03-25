@@ -116,7 +116,7 @@ function LoginForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t: a
 
       <div style={s.field}>
         <input {...register('email')} type="email" placeholder={getLabel('email_placeholder')} style={s.input} />
-        {errors.email && <span style={s.err}>{getErrorMsg(errors.email.message, lang)}</span>}
+        {errors.email && <span style={s.err}>{getErrorMsg(errors.email.message || '', lang)}</span>}
       </div>
 
       <div style={s.field}>
@@ -126,7 +126,7 @@ function LoginForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t: a
             {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {errors.password && <span style={s.err}>{getErrorMsg(errors.password.message, lang)}</span>}
+        {errors.password && <span style={s.err}>{getErrorMsg(errors.password.message || '', lang)}</span>}
       </div>
 
       <Link href="/forgot-password" style={{ fontSize: '0.82rem', color: '#1e3a8a', textAlign: 'right', textDecoration: 'underline' }}>
@@ -224,22 +224,22 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div style={s.field}>
           <input {...register('fullName')} placeholder={getLabel('full_name_placeholder')} style={s.input} />
-          {errors.fullName && <span style={s.err}>{getErrorMsg(errors.fullName.message, lang)}</span>}
+          {errors.fullName && <span style={s.err}>{getErrorMsg(errors.fullName.message || '', lang)}</span>}
         </div>
         <div style={s.field}>
           <input {...register('organization')} placeholder={getLabel('org_placeholder')} style={s.input} />
-          {errors.organization && <span style={s.err}>{getErrorMsg(errors.organization.message, lang)}</span>}
+          {errors.organization && <span style={s.err}>{getErrorMsg(errors.organization.message || '', lang)}</span>}
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div style={s.field}>
           <input {...register('email')} type="email" placeholder={getLabel('email_placeholder')} style={s.input} />
-          {errors.email && <span style={s.err}>{getErrorMsg(errors.email.message, lang)}</span>}
+          {errors.email && <span style={s.err}>{getErrorMsg(errors.email.message || '', lang)}</span>}
         </div>
         <div style={s.field}>
           <input {...register('phone')} placeholder={getLabel('phone_placeholder')} style={s.input} />
-          {errors.phone && <span style={s.err}>{getErrorMsg(errors.phone.message, lang)}</span>}
+          {errors.phone && <span style={s.err}>{getErrorMsg(errors.phone.message || '', lang)}</span>}
         </div>
       </div>
 
@@ -250,7 +250,7 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
             {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {errors.password && <span style={s.err}>{getErrorMsg(errors.password.message, lang)}</span>}
+        {errors.password && <span style={s.err}>{getErrorMsg(errors.password.message || '', lang)}</span>}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -263,7 +263,7 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
             <option>Gouvernance</option><option>Environnement</option><option>Innovation & Tech</option>
             <option>Autre</option>
           </select>
-          {errors.domain && <span style={s.err}>{getErrorMsg(errors.domain.message, lang)}</span>}
+          {errors.domain && <span style={s.err}>{getErrorMsg(errors.domain.message || '', lang)}</span>}
         </div>
         <div style={s.field}>
           <select {...register('country')} style={{ ...s.input, cursor: 'pointer' }}>
@@ -272,7 +272,7 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
             <option>Burkina Faso</option><option>Niger</option><option>Guinée</option>
             <option>Mauritanie</option><option>France</option><option>Autre</option>
           </select>
-          {errors.country && <span style={s.err}>{getErrorMsg(errors.country.message, lang)}</span>}
+          {errors.country && <span style={s.err}>{getErrorMsg(errors.country.message || '', lang)}</span>}
         </div>
       </div>
 
@@ -282,7 +282,7 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
           {getLabel('rgpd_label')} <Link href="/privacy" style={{ color: '#1e3a8a', textDecoration: 'underline' }}>{getLabel('rgpd_link')}</Link> *
         </label>
       </div>
-      {errors.rgpd && <span style={s.err}>{getErrorMsg(errors.rgpd.message, lang)}</span>}
+      {errors.rgpd && <span style={s.err}>{getErrorMsg(errors.rgpd.message || '', lang)}</span>}
 
       <button type="submit" disabled={loading} style={{ ...s.btn('#FEA621'), opacity: loading ? 0.5 : 1 }}>
         {loading ? getLabel('register_loading') : getLabel('register_button')}

@@ -1,52 +1,63 @@
 'use client'
-// app/b2b/page.tsx
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, MessageSquare, Users, Star, Search, Filter } from 'lucide-react'
+import { Calendar, MessageSquare, Users, Search, Filter } from 'lucide-react'
 import { mockNGOs } from '@/lib/mock-data'
 import toast from 'react-hot-toast'
+import { useLang } from '@/lib/lang-context'
+import fr from '@/messages/fr.json'
+import en from '@/messages/en.json'
+
+function getNestedValue(obj: any, path: string): string {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj) || path
+}
 
 const timeSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30']
-const days = ['14 Mai 2026', '15 Mai 2026', '16 Mai 2026']
+const daysFR = ['14 Mai 2026', '15 Mai 2026', '16 Mai 2026']
+const daysEN = ['May 14, 2026', 'May 15, 2026', 'May 16, 2026']
 
 export default function B2BPage() {
+  const { lang } = useLang()
+  const t = lang === 'fr' ? fr : en
+  const getLabel = (key: string) => getNestedValue(t.b2b, key) || key
+  
   const [activeSection, setActiveSection] = useState<'directory' | 'meetings' | 'chat'>('directory')
-  const [selectedNGO, setSelectedNGO] = useState<typeof mockNGOs[0] | null>(null)
   const [meetingModal, setMeetingModal] = useState<typeof mockNGOs[0] | null>(null)
+  const days = lang === 'fr' ? daysFR : daysEN
   const [selectedDay, setSelectedDay] = useState(days[0])
   const [selectedTime, setSelectedTime] = useState('')
 
   const handleRequestMeeting = () => {
     if (!selectedTime) {
-      toast.error('Veuillez sélectionner un créneau')
+      toast.error(getLabel('modal.error_no_time'))
       return
     }
-    toast.success(`✅ Demande de RDV envoyée à ${meetingModal?.name} pour le ${selectedDay} à ${selectedTime}`)
+    toast.success(
+      `${getLabel('modal.success')} ${meetingModal?.name} ${getLabel('modal.for_date')} ${selectedDay} ${selectedTime}`
+    )
     setMeetingModal(null)
     setSelectedTime('')
   }
 
   return (
     <div className="pt-20 bg-gray-50 min-h-screen">
-      {/* Header */}
       <div className="bg-gradient-to-r from-primary-950 to-primary-900 py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-2">
             <span className="vip-badge">VIP</span>
-            <span className="text-white/60 text-sm">Accès restreint – Exposants & Participants B2B</span>
+            <span className="text-white/60 text-sm">{getLabel('restricted')}</span>
           </div>
-          <h1 className="text-3xl font-black text-white">Espace Networking B2B</h1>
-          <p className="text-white/70 mt-1">Rencontrez des partenaires stratégiques, planifiez des rendez-vous et échangez en direct</p>
+          <h1 className="text-3xl font-black text-white">{getLabel('title')}</h1>
+          <p className="text-white/70 mt-1">{getLabel('subtitle')}</p>
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="bg-white border-b border-gray-200 px-4">
         <div className="max-w-7xl mx-auto flex gap-0">
           {[
-            { id: 'directory', label: 'Annuaire ONG', icon: Users },
-            { id: 'meetings', label: 'Mes RDV', icon: Calendar },
-            { id: 'chat', label: 'Messagerie', icon: MessageSquare },
+            { id: 'directory', labelKey: 'tabs.directory', icon: Users },
+            { id: 'meetings', labelKey: 'tabs.meetings', icon: Calendar },
+            { id: 'chat', labelKey: 'tabs.chat', icon: MessageSquare },
           ].map(tab => {
             const Icon = tab.icon
             return (
@@ -59,7 +70,7 @@ export default function B2BPage() {
                     : 'border-transparent text-gray-500 hover:text-primary-900'
                 }`}
               >
-                <Icon size={16} /> {tab.label}
+                <Icon size={16} /> {getLabel(tab.labelKey)}
               </button>
             )
           })}
@@ -67,19 +78,18 @@ export default function B2BPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Directory */}
         {activeSection === 'directory' && (
           <div>
             <div className="flex flex-col md:flex-row gap-4 mb-8">
               <div className="relative flex-1">
                 <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
-                  placeholder="Rechercher une ONG..."
+                  placeholder={getLabel('directory.search_placeholder')}
                   className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-700 bg-white"
                 />
               </div>
               <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-600 px-5 py-3 rounded-2xl font-medium hover:bg-gray-50">
-                <Filter size={16} /> Filtrer par domaine
+                <Filter size={16} /> {getLabel('directory.filter')}
               </button>
             </div>
 
@@ -112,9 +122,9 @@ export default function B2BPage() {
                     <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">{ngo.description}</p>
                     <div className="grid grid-cols-3 gap-2 mb-4 text-center">
                       {[
-                        { label: 'Staff', value: ngo.employees },
-                        { label: 'Bénéficiaires', value: ngo.beneficiaires },
-                        { label: 'Régions', value: ngo.regions.length },
+                        { label: lang === 'fr' ? 'Staff' : 'Staff', value: ngo.employees },
+                        { label: lang === 'fr' ? 'Bénéficiaires' : 'Beneficiaries', value: ngo.beneficiaires },
+                        { label: lang === 'fr' ? 'Régions' : 'Regions', value: ngo.regions.length },
                       ].map(stat => (
                         <div key={stat.label} className="bg-gray-50 rounded-lg p-2">
                           <div className="font-black text-primary-900 text-sm">{stat.value}</div>
@@ -127,10 +137,10 @@ export default function B2BPage() {
                         onClick={() => setMeetingModal(ngo)}
                         className="flex-1 bg-primary-900 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-primary-800 transition-colors"
                       >
-                        📅 Demander RDV
+                        📅 {getLabel('meetings.request_meeting')}
                       </button>
                       <button
-                        onClick={() => toast.success(`Message envoyé à ${ngo.acronym}`)}
+                        onClick={() => toast.success(`${lang === 'fr' ? 'Message envoyé à' : 'Message sent to'} ${ngo.acronym}`)}
                         className="px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm hover:bg-gray-50 transition-colors"
                       >
                         💬
@@ -143,37 +153,35 @@ export default function B2BPage() {
           </div>
         )}
 
-        {/* Meetings */}
         {activeSection === 'meetings' && (
           <div className="max-w-2xl">
-            <h2 className="font-black text-primary-900 text-xl mb-6">Mes rendez-vous B2B</h2>
+            <h2 className="font-black text-primary-900 text-xl mb-6">{getLabel('meetings.title')}</h2>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
               <Calendar size={48} className="mx-auto text-gray-300 mb-3" />
-              <p className="text-gray-500 font-semibold mb-1">Aucun RDV planifié</p>
-              <p className="text-gray-400 text-sm">Parcourez l'annuaire et demandez des rendez-vous avec les ONG partenaires</p>
+              <p className="text-gray-500 font-semibold mb-1">{getLabel('meetings.empty_title')}</p>
+              <p className="text-gray-400 text-sm">{getLabel('meetings.empty_desc')}</p>
               <button
                 onClick={() => setActiveSection('directory')}
                 className="mt-4 bg-primary-900 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-primary-800 transition-colors"
               >
-                Voir l'annuaire →
+                {getLabel('tabs.directory')} →
               </button>
             </div>
           </div>
         )}
 
-        {/* Chat */}
         {activeSection === 'chat' && (
           <div className="max-w-2xl">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="p-4 border-b border-gray-100 bg-gray-50">
-                <h2 className="font-bold text-gray-900">Messagerie B2B (Temps réel)</h2>
-                <p className="text-xs text-gray-500">Propulsé par Supabase Realtime</p>
+                <h2 className="font-bold text-gray-900">{getLabel('chat.title')}</h2>
+                <p className="text-xs text-gray-500">{lang === 'fr' ? 'Propulsé par Supabase Realtime' : 'Powered by Supabase Realtime'}</p>
               </div>
               <div className="h-80 flex items-center justify-center text-gray-400">
                 <div className="text-center">
                   <MessageSquare size={40} className="mx-auto mb-2 opacity-30" />
-                  <p className="font-semibold text-sm">Connectez-vous pour accéder à la messagerie</p>
-                  <p className="text-xs mt-1">Supabase Realtime activé après configuration</p>
+                  <p className="font-semibold text-sm">{getLabel('chat.empty_title')}</p>
+                  <p className="text-xs mt-1">{getLabel('chat.empty_desc')}</p>
                 </div>
               </div>
             </div>
@@ -181,7 +189,6 @@ export default function B2BPage() {
         )}
       </div>
 
-      {/* Meeting Request Modal */}
       {meetingModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setMeetingModal(null)}>
           <motion.div
@@ -190,13 +197,13 @@ export default function B2BPage() {
             className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
-            <h2 className="text-xl font-black text-primary-900 mb-1">Demander un RDV</h2>
-            <p className="text-gray-500 text-sm mb-6">avec {meetingModal.name} ({meetingModal.acronym})</p>
+            <h2 className="text-xl font-black text-primary-900 mb-1">{getLabel('modal.title')}</h2>
+            <p className="text-gray-500 text-sm mb-6">{getLabel('modal.with')} {meetingModal.name} ({meetingModal.acronym})</p>
 
             <div className="mb-5">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Choisir un jour</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">{getLabel('modal.select_day')}</label>
               <div className="flex gap-2">
-                {days.map(d => (
+                {days.map((d, i) => (
                   <button
                     key={d}
                     onClick={() => setSelectedDay(d)}
@@ -204,24 +211,24 @@ export default function B2BPage() {
                       selectedDay === d ? 'bg-primary-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {d.split(' ')[0]} {d.split(' ')[1]}
+                    {lang === 'fr' ? `${i + 14}` : `${i + 14}`} {lang === 'fr' ? 'Mai' : 'May'}
                   </button>
                 ))}
               </div>
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Choisir un créneau (30 min)</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">{getLabel('modal.select_time')}</label>
               <div className="grid grid-cols-4 gap-2">
-                {timeSlots.map(t => (
+                {timeSlots.map(slot => (
                   <button
-                    key={t}
-                    onClick={() => setSelectedTime(t)}
+                    key={slot}
+                    onClick={() => setSelectedTime(slot)}
                     className={`py-2 rounded-xl text-xs font-bold transition-all ${
-                      selectedTime === t ? 'bg-accent-orange text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      selectedTime === slot ? 'bg-accent-orange text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {t}
+                    {slot}
                   </button>
                 ))}
               </div>
@@ -232,13 +239,13 @@ export default function B2BPage() {
                 onClick={() => setMeetingModal(null)}
                 className="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
               >
-                Annuler
+                {getLabel('modal.cancel')}
               </button>
               <button
                 onClick={handleRequestMeeting}
                 className="flex-1 bg-primary-900 text-white py-3 rounded-xl font-bold hover:bg-primary-800 transition-colors"
               >
-                Confirmer →
+                {getLabel('modal.confirm')} →
               </button>
             </div>
           </motion.div>
