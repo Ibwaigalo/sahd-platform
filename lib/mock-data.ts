@@ -279,19 +279,19 @@ export const mockNGOs = [
 
 export const mockSponsors = {
   platine: [
-    { id: '1', name: 'Banque Mondiale', logo: '🏦', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/World_Bank_logo.svg/200px-World_Bank_logo.svg.png', url: 'https://worldbank.org', description: 'Partenaire financier principal' },
-    { id: '2', name: 'USAID', logo: '🇺🇸', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/USAID_logo.svg/200px-USAID_logo.svg.png', url: 'https://usaid.gov', description: 'Agence américaine de développement' },
+    { id: '1', name: 'Banque Mondiale', logo: '🏦', logoUrl: '/logos/world-bank.svg', url: 'https://worldbank.org', description: 'Partenaire financier principal' },
+    { id: '2', name: 'USAID', logo: '🇺🇸', logoUrl: '/logos/usaid.svg', url: 'https://usaid.gov', description: 'Agence américaine de développement' },
   ],
   or: [
-    { id: '3', name: 'Union Européenne', logo: '🇪🇺', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/200px-Flag_of_Europe.svg.png', url: 'https://europa.eu', description: 'Fonds EU pour le développement' },
-    { id: '4', name: 'PNUD Mali', logo: '🌐', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/UNDP_logo.svg/200px-UNDP_logo.svg.png', url: 'https://undp.org', description: 'Programme des Nations Unies' },
-    { id: '5', name: 'AFD Mali', logo: '🏛️', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/AFD_Logo.svg/200px-AFD_Logo.svg.png', url: 'https://afd.fr', description: 'Agence Française de Développement' },
+    { id: '3', name: 'Union Européenne', logo: '🇪🇺', logoUrl: '/logos/eu.svg', url: 'https://europa.eu', description: 'Fonds EU pour le développement' },
+    { id: '4', name: 'PNUD Mali', logo: '🌐', logoUrl: '/logos/undp.svg', url: 'https://undp.org', description: 'Programme des Nations Unies' },
+    { id: '5', name: 'AFD Mali', logo: '🏛️', logoUrl: '/logos/afd.svg', url: 'https://afd.fr', description: 'Agence Française de Développement' },
   ],
   argent: [
-    { id: '6', name: 'Orange Mali', logo: '🍊', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Orange_logo.svg/200px-Orange_logo.svg.png', url: 'https://orange.ml', description: 'Partenaire Télécoms' },
+    { id: '6', name: 'Orange Mali', logo: '🍊', logoUrl: '/logos/orange.svg', url: 'https://orange.ml', description: 'Partenaire Télécoms' },
     { id: '7', name: 'BMS-Sa', logo: '💳', logoUrl: '', url: '#', description: 'Banque Malienne de Solidarité' },
-    { id: '8', name: 'Ecobank Mali', logo: '🏪', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Ecobank_logo.svg/200px-Ecobank_logo.svg.png', url: 'https://ecobank.com', description: 'Partenaire Financier' },
-    { id: '9', name: 'MTN Mali', logo: '📱', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/MTN_logo.svg/200px-MTN_logo.svg.png', url: '#', description: 'Partenaire Mobile Money' },
+    { id: '8', name: 'Ecobank Mali', logo: '🏪', logoUrl: '/logos/ecobank.svg', url: 'https://ecobank.com', description: 'Partenaire Financier' },
+    { id: '9', name: 'MTN Mali', logo: '📱', logoUrl: '/logos/mtn.svg', url: '#', description: 'Partenaire Mobile Money' },
   ],
   media: [
     { id: '10', name: 'ORTM', logo: '📺', logoUrl: '', url: '#', description: 'Télévision nationale' },
