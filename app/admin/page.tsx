@@ -111,9 +111,7 @@ export default function AdminPage() {
       <div className="pt-20 min-h-screen bg-gray-950 flex items-center justify-center px-4">
         <div className="bg-gray-900 rounded-3xl p-10 max-w-sm w-full border border-gray-800">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-primary-900 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <img src="/logo-sahd-web.png" alt="SAHD" className="h-10 w-auto object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
-            </div>
+            <img src="/logo-sahd-web.png" alt="SAHD" className="h-16 w-auto mx-auto mb-4" />
             <h1 className="text-white font-black text-2xl">Back-office Admin</h1>
             <p className="text-gray-500 text-sm mt-1">SAHD 2026 – Accès restreint</p>
           </div>
@@ -139,9 +137,12 @@ export default function AdminPage() {
       {/* Header */}
       <div className="bg-primary-900 py-6 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-white font-black text-2xl">Back-office SAHD 2026</h1>
-            <p className="text-white/60 text-sm">Administration de la plateforme</p>
+          <div className="flex items-center gap-4">
+            <img src="/logo-sahd-web.png" alt="SAHD" className="h-14 w-auto" />
+            <div>
+              <h1 className="text-white font-black text-2xl">Back-office SAHD 2026</h1>
+              <p className="text-white/60 text-sm">Administration de la plateforme</p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={fetchRegistrations}
