@@ -43,6 +43,7 @@ export default function ContactPage() {
               {[
                 { icon: Mail, label: t.contact.email_label, value: contactSponsoring.email2, href: `mailto:${contactSponsoring.email2}` },
                 { icon: Phone, label: t.contact.phone_label, value: contactSponsoring.phone, href: `tel:${contactSponsoring.phone}` },
+                { icon: Phone, label: t.contact.phone_label2, value: contactSponsoring.phone2, href: `tel:${contactSponsoring.phone2}` },
                 { icon: MapPin, label: t.contact.address_label, value: t.contact.address_value, href: '#' },
               ].map(({ icon: Icon, label, value, href }) => (
                 <a key={label} href={href} className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl hover:bg-primary-50 transition-colors group">

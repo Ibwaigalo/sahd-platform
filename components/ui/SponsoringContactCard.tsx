@@ -25,8 +25,17 @@ export default function SponsoringContactCard({ compact = false }: { compact?: b
             className="flex items-center gap-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-3 transition-all group">
             <Phone size={16} className="text-accent-gold flex-shrink-0" />
             <div>
-              <div className="text-white/50 text-xs">Tél. / WhatsApp</div>
+              <div className="text-white/50 text-xs">Téléphone 1</div>
               <div className="text-white font-bold text-sm group-hover:text-accent-gold transition-colors">{contactSponsoring.phone}</div>
+            </div>
+          </a>
+
+          <a href={`tel:${contactSponsoring.phone2}`}
+            className="flex items-center gap-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-3 transition-all group">
+            <Phone size={16} className="text-accent-orange flex-shrink-0" />
+            <div>
+              <div className="text-white/50 text-xs">Téléphone 2</div>
+              <div className="text-white font-bold text-sm group-hover:text-accent-orange transition-colors">{contactSponsoring.phone2}</div>
             </div>
           </a>
 
