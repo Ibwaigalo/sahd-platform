@@ -62,7 +62,11 @@ export default function SponsorsPage() {
                   {sponsors.map(sponsor => (
                     <a key={sponsor.id} href={sponsor.url} target="_blank" rel="noopener noreferrer"
                       className={`flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-2xl hover:border-primary-300 hover:shadow-lg transition-all sponsor-card group ${tier.key === 'platine' ? 'p-8' : 'p-5'}`}>
-                      <span className={tier.key === 'platine' ? 'text-5xl' : 'text-3xl'}>{sponsor.logo}</span>
+                      {sponsor.logoUrl ? (
+                        <img src={sponsor.logoUrl} alt={sponsor.name} className={tier.key === 'platine' ? 'h-16 w-auto object-contain' : 'h-10 w-auto object-contain'} />
+                      ) : (
+                        <span className={tier.key === 'platine' ? 'text-5xl' : 'text-3xl'}>{sponsor.logo}</span>
+                      )}
                       <div className="flex-1 min-w-0">
                         <div className={`font-bold text-gray-800 group-hover:text-primary-900 transition-colors truncate ${tier.key === 'platine' ? 'text-xl' : 'text-sm'}`}>{sponsor.name}</div>
                         {sponsor.description && <div className="text-gray-500 text-xs truncate">{sponsor.description}</div>}
