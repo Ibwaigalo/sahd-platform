@@ -1,0 +1,17 @@
+sahd-platform/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx (Home)
+│   ├── about/page.tsx
+│   ├── programme/page.tsx
+│   ├── intervenants/page.tsx
+│   ├── sponsors/page.tsx
+│   ├── contact/page.tsx
+│   ├── inscription/page.tsx
+│   ├── dashboard/page.tsx
+│   ├── b2b/page.tsx
+│   ├── media/page.tsx
+│   └── admin/page.tsx
+├── components/
+├── lib/
+└── public/
