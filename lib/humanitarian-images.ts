@@ -47,12 +47,12 @@ export const humanitarianImages = {
     'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop',
   ],
   africa: [
-    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&h=600&fit=crop&crop=top',
+    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop&crop=top',
+    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop&crop=top',
+    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop&crop=top',
+    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&h=600&fit=crop&crop=top',
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800&h=600&fit=crop&crop=top',
   ],
 }
 

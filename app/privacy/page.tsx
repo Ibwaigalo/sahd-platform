@@ -1,42 +1,54 @@
-// app/privacy/page.tsx
+'use client'
+import { useLang } from '@/lib/lang-context'
+import fr from '@/messages/fr.json'
+import en from '@/messages/en.json'
+
+function getNestedValue(obj: any, path: string): string {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj) || path
+}
+
 export default function PrivacyPage() {
+  const { lang } = useLang()
+  const t = lang === 'fr' ? fr : en
+  const s = t.privacy.sections
+
   return (
     <div className="pt-20">
       <div className="bg-primary-950 py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-black text-white">Politique de Confidentialité</h1>
-          <p className="text-white/60 mt-2">Dernière mise à jour : Mars 2026</p>
+          <h1 className="text-4xl font-black text-white">{t.privacy.title}</h1>
+          <p className="text-white/60 mt-2">{t.privacy.updated}</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-4 py-16 prose prose-lg">
         <div className="space-y-8 text-gray-700">
           <section>
-            <h2 className="text-2xl font-black text-primary-900">1. Collecte des données</h2>
-            <p>Dans le cadre de l'organisation du Salon de l'Action Humanitaire et du Développement (SAHD) 2026, nous collectons les données personnelles suivantes : nom et prénom, adresse email, numéro de téléphone, organisation, domaine d'intervention.</p>
+            <h2 className="text-2xl font-black text-primary-900">{s.data_collection}</h2>
+            <p>{s.data_collection_text}</p>
           </section>
           <section>
-            <h2 className="text-2xl font-black text-primary-900">2. Utilisation des données</h2>
-            <p>Vos données sont utilisées exclusivement pour : la gestion de votre inscription au SAHD, l'envoi de communications relatives à l'événement, la génération de votre badge d'accès, et la facilitation du networking B2B si applicable.</p>
+            <h2 className="text-2xl font-black text-primary-900">{s.data_use}</h2>
+            <p>{s.data_use_text}</p>
           </section>
           <section>
-            <h2 className="text-2xl font-black text-primary-900">3. Base légale (RGPD)</h2>
-            <p>Le traitement de vos données repose sur votre consentement explicite donné lors de l'inscription. Vous pouvez retirer ce consentement à tout moment.</p>
+            <h2 className="text-2xl font-black text-primary-900">{s.legal_basis}</h2>
+            <p>{s.legal_basis_text}</p>
           </section>
           <section>
-            <h2 className="text-2xl font-black text-primary-900">4. Conservation</h2>
-            <p>Vos données sont conservées pendant 24 mois après l'événement, puis supprimées automatiquement.</p>
+            <h2 className="text-2xl font-black text-primary-900">{s.retention}</h2>
+            <p>{s.retention_text}</p>
           </section>
           <section>
-            <h2 className="text-2xl font-black text-primary-900">5. Vos droits</h2>
-            <p>Conformément au RGPD, vous disposez des droits d'accès, rectification, effacement, portabilité et opposition. Pour exercer ces droits, contactez : <a href="mailto:privacy@sahd-mali.org" className="text-primary-700">privacy@sahd-mali.org</a></p>
+            <h2 className="text-2xl font-black text-primary-900">{s.rights}</h2>
+            <p>{s.rights_text} <a href="mailto:privacy@sahd-mali.org" className="text-primary-700">privacy@sahd-mali.org</a></p>
           </section>
           <section>
-            <h2 className="text-2xl font-black text-primary-900">6. Cookies</h2>
-            <p>Nous utilisons des cookies techniques (nécessaires au fonctionnement) et des cookies analytiques (avec votre consentement). Vous pouvez gérer vos préférences via la bannière de consentement.</p>
+            <h2 className="text-2xl font-black text-primary-900">{s.cookies}</h2>
+            <p>{s.cookies_text}</p>
           </section>
           <section>
-            <h2 className="text-2xl font-black text-primary-900">7. Contact DPO</h2>
-            <p>Pour toute question relative à vos données : <a href="mailto:privacy@sahd-mali.org" className="text-primary-700">privacy@sahd-mali.org</a></p>
+            <h2 className="text-2xl font-black text-primary-900">{s.contact}</h2>
+            <p>{s.contact_text} <a href="mailto:privacy@sahd-mali.org" className="text-primary-700">privacy@sahd-mali.org</a></p>
           </section>
         </div>
       </div>

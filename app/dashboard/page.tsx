@@ -109,7 +109,7 @@ export default function DashboardPage() {
     { id: 'messages', labelKey: 'tab_messages', icon: MessageSquare },
   ]
 
-  const qrData = `https://sahd-mali.org/verify/${profile?.badge_number}`
+  const qrData = `${typeof window !== 'undefined' ? window.location.origin : ''}/verify/${profile?.badge_number}`
   const catInfo = categoryLabels[profile?.category] || categoryLabels['visiteur']
   const catLabel = lang === 'fr' ? catInfo.fr : catInfo.en
   const catGradient = categoryColors[profile?.category] || categoryColors['visiteur']
