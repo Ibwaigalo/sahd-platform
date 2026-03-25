@@ -163,5 +163,250 @@
     "confidentiality": "Privacy",
     "conditions": "Terms",
     "admin": "Admin"
+  },
+  "inscription": {
+    "title": "SAHD 2026 Registration",
+    "subtitle": "Choose your category and create your account",
+    "step1": "Category",
+    "step2": "Information",
+    "select_category": "Select your category",
+    "selected": "Selected",
+    "popular": "Popular",
+    "continue_with": "Continue with",
+    "already_registered": "Already registered?",
+    "login_link": "Login",
+    "category_chosen": "Category chosen:",
+    "modify": "Modify",
+    "full_name": "Full name *",
+    "full_name_placeholder": "Ex: John Smith",
+    "organization": "Organization *",
+    "org_placeholder": "Ex: Hope NGO Mali",
+    "email_label": "Email *",
+    "email_placeholder": "your@email.com",
+    "phone_label": "Phone *",
+    "phone_placeholder": "+223 70 00 00 00",
+    "password_label": "Password *",
+    "password_placeholder": "Min. 8 characters",
+    "password_hint": "Will be used to login to your personal space",
+    "domain_label": "Field of intervention *",
+    "country_label": "Country *",
+    "rgpd_label": "I accept the",
+    "rgpd_link": "privacy policy",
+    "rgpd_suffix": "and the processing of my data for the organization of SAHD 2026. *",
+    "submit_button": "Create my account and register",
+    "submit_loading": "Creating account...",
+    "success_title": "Registration confirmed!",
+    "success_message": "A confirmation email has been sent to",
+    "check_email": "Check your inbox",
+    "email_sent_from": "A confirmation email has been sent to you from admin@sahd-mali.org",
+    "event_info": "May 14–16, 2026",
+    "event_location": "Congress Palace, Bamako, Mali",
+    "access_space": "Access my space →",
+    "categories": {
+      "visiteur": "Standard Visitor",
+      "visiteur_price": "Free",
+      "visiteur_features": ["Access to public panels", "General networking", "Gallery and exhibitions", "Digital documentation"],
+      "participant": "Paying Participant",
+      "participant_price": "25,000 FCFA",
+      "participant_features": ["Everything from Visitor +", "Official nominative badge", "Access to specialized workshops", "Meals included (3 days)", "Certificate of participation"],
+      "exposant": "NGO Exhibitor",
+      "exposant_price": "150,000 FCFA",
+      "exposant_features": ["3x3m stand", "Exhibitor badge (5)", "Logo on supports", "NGO profile on platform", "B2B networking access"],
+      "vip": "VIP B2B",
+      "vip_price": "300,000 FCFA",
+      "vip_features": ["Everything Exhibitor +", "Exclusive VIP Lounge", "Pre-planned B2B meetings", "Donor round table", "Media coverage"]
+    },
+    "errors": {
+      "name_required": "Name required (min 2 characters)",
+      "org_required": "Organization required",
+      "email_invalid": "Invalid email",
+      "password_required": "Password required (min 8 characters)",
+      "phone_required": "Phone required",
+      "domain_required": "Field required",
+      "country_required": "Country required",
+      "rgpd_required": "You must accept the privacy policy"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Access your personal space",
+    "email_label": "Email",
+    "email_placeholder": "your@email.com",
+    "password_label": "Password",
+    "forgot_password": "Forgot password?",
+    "submit": "Login",
+    "submit_loading": "Logging in...",
+    "no_account": "Don't have an account?",
+    "register_link": "Register",
+    "welcome_title": "Welcome to SAHD 2026!",
+    "welcome_desc": "Don't have an account yet?",
+    "welcome_action": "Join the national platform for humanitarian action in Mali.",
+    "register_action": "Register",
+    "already_registered_title": "Already registered?",
+    "already_registered_desc": "Login to access your personal SAHD 2026 space",
+    "login_action": "Login",
+    "dates_label": "Dates",
+    "dates_value": "May 14–16, 2026",
+    "location_label": "Location",
+    "location_value": "Congress Palace, Bamako",
+    "register_title": "Registration",
+    "register_subtitle": "Create your SAHD 2026 account",
+    "full_name_placeholder": "Full name *",
+    "org_placeholder": "Organization *",
+    "phone_placeholder": "Phone *",
+    "password_register_placeholder": "Password (min. 8 characters) *",
+    "domain_select": "Field *",
+    "country_select": "Country *",
+    "rgpd_label": "I accept the",
+    "rgpd_link": "privacy policy",
+    "register_button": "Create my account",
+    "register_loading": "Creating...",
+    "success_title": "Registration confirmed!",
+    "success_message": "Email sent to",
+    "access_space": "My space →",
+    "error_invalid": "Invalid email or password",
+    "error_email_exists": "Email already registered. Login.",
+    "error_generic": "Unexpected error",
+    "categories": {
+      "visiteur": "Visitor",
+      "visiteur_price": "Free",
+      "participant": "Participant",
+      "participant_price": "25,000 FCFA",
+      "exposant": "NGO Exhibitor",
+      "exposant_price": "150,000 FCFA",
+      "vip": "VIP B2B",
+      "vip_price": "300,000 FCFA"
+    }
+  },
+  "dashboard": {
+    "loading": "Loading your space...",
+    "no_profile": "No profile found.",
+    "register": "Register",
+    "logout": "Logout",
+    "overview": "Overview",
+    "my_badge": "My Badge",
+    "my_panels": "My Panels",
+    "tab_messages": "Messages",
+    "stats": {
+      "badge_number": "Badge No.",
+      "panels_reserved": "Panels reserved",
+      "country": "Country",
+      "domain": "Domain"
+    },
+    "my_info": "My information",
+    "labels": {
+      "full_name": "Full name",
+      "organization": "Organization",
+      "email": "Email",
+      "phone": "Phone",
+      "category": "Category",
+      "domain": "Domain",
+      "country": "Country",
+      "badge_number": "Badge No."
+    },
+    "badge": {
+      "title": "My Badge",
+      "badge_number": "#",
+      "download": "View and download →",
+      "download_pdf": "Download my badge (PDF)",
+      "generating": "Generating...",
+      "qr_info": "The badge contains a unique QR code for verification at the entrance",
+      "instructions_title": "How to use your badge?",
+      "instructions": [
+        "Download and print your badge or keep it on your phone",
+        "Present the QR code at the Congress Palace entrance",
+        "The badge is personal and non-transferable"
+      ]
+    },
+    "event": {
+      "dates": "May 14–16, 2026",
+      "location": "Congress Palace, Bamako"
+    },
+    "status": {
+      "validated": "Registration validated",
+      "pending": "Awaiting validation",
+      "validated_desc": "Your badge is ready to download",
+      "pending_desc": "Validation within 24-48 business hours"
+    },
+    "quick_actions": "Quick actions",
+    "actions": {
+      "download_badge": "Download my badge",
+      "view_program": "View programme",
+      "b2b_space": "VIP B2B Space"
+    },
+    "panels": {
+      "title": "My panel reservations",
+      "reserve_panel": "+ Book a panel",
+      "empty_title": "No panels reserved",
+      "empty_desc": "Explore the programme and book your seats",
+      "view_program": "View programme",
+      "day": "Day",
+      "confirmed": "Confirmed",
+      "details": "Details →",
+      "hour": "Hour"
+    },
+    "messages": {
+      "title": "Internal messaging",
+      "count": "0 message",
+      "empty_title": "No messages yet",
+      "empty_desc": "B2B messaging is available for VIP participants",
+      "access_b2b": "Access B2B space →"
+    }
+  },
+  "b2b": {
+    "title": "B2B Networking Space",
+    "subtitle": "Meet strategic partners, schedule appointments and exchange in real time",
+    "restricted": "Restricted access – Exhibitors & B2B Participants",
+    "tabs": {
+      "directory": "NGO Directory",
+      "meetings": "My Appointments",
+      "chat": "Messaging"
+    },
+    "directory": {
+      "search_placeholder": "Search for an NGO...",
+      "filter": "Filter by domain"
+    },
+    "meetings": {
+      "title": "My appointments",
+      "empty_title": "No appointments scheduled",
+      "empty_desc": "Browse the directory and propose appointments to NGOs that interest you",
+      "request_meeting": "Request an appointment"
+    },
+    "modal": {
+      "title": "Schedule an appointment",
+      "with": "with",
+      "select_day": "Choose a day",
+      "select_time": "Choose a time slot",
+      "confirm": "Send request",
+      "cancel": "Cancel",
+      "success": "Appointment request sent to",
+      "for_date": "for",
+      "error_no_time": "Please select a time slot"
+    },
+    "chat": {
+      "title": "Direct messaging",
+      "empty_title": "No conversations",
+      "empty_desc": "Conversations will appear here after accepting a B2B appointment"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: March 2026",
+    "sections": {
+      "data_collection": "1. Data collection",
+      "data_collection_text": "For the organization of the Humanitarian Action and Development Fair (SAHD) 2026, we collect the following personal data: first and last name, email address, phone number, organization, field of intervention.",
+      "data_use": "2. Data use",
+      "data_use_text": "Your data is used exclusively for: managing your SAHD registration, sending communications related to the event, generating your access badge, and facilitating B2B networking if applicable.",
+      "legal_basis": "3. Legal basis (GDPR)",
+      "legal_basis_text": "The processing of your data is based on your explicit consent given during registration. You may withdraw this consent at any time.",
+      "retention": "4. Retention",
+      "retention_text": "Your data is retained for 24 months after the event, then automatically deleted.",
+      "rights": "5. Your rights",
+      "rights_text": "In accordance with GDPR, you have the rights of access, rectification, erasure, portability and opposition. To exercise these rights, contact:",
+      "cookies": "6. Cookies",
+      "cookies_text": "We use technical cookies (necessary for operation) and analytical cookies (with your consent). You can manage your preferences via the consent banner.",
+      "contact": "7. DPO Contact",
+      "contact_text": "For any questions regarding your data:"
+    }
   }
 }

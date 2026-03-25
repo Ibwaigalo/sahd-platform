@@ -163,5 +163,250 @@
     "confidentiality": "Confidentialité",
     "conditions": "Conditions",
     "admin": "Admin"
+  },
+  "inscription": {
+    "title": "Inscription SAHD 2026",
+    "subtitle": "Choisissez votre catégorie et créez votre compte",
+    "step1": "Catégorie",
+    "step2": "Informations",
+    "select_category": "Sélectionnez votre catégorie",
+    "selected": "Sélectionné",
+    "popular": "Populaire",
+    "continue_with": "Continuer avec",
+    "already_registered": "Déjà inscrit ?",
+    "login_link": "Se connecter",
+    "category_chosen": "Catégorie choisie :",
+    "modify": "Modifier",
+    "full_name": "Nom complet *",
+    "full_name_placeholder": "Ex: Aminata Konaté",
+    "organization": "Organisation *",
+    "org_placeholder": "Ex: ONG Espoir Mali",
+    "email_label": "Email *",
+    "email_placeholder": "votre@email.com",
+    "phone_label": "Téléphone *",
+    "phone_placeholder": "+223 70 00 00 00",
+    "password_label": "Mot de passe *",
+    "password_placeholder": "Min. 8 caractères",
+    "password_hint": "Servira à vous connecter à votre espace personnel",
+    "domain_label": "Domaine d'intervention *",
+    "country_label": "Pays *",
+    "rgpd_label": "J'accepte la",
+    "rgpd_link": "politique de confidentialité",
+    "rgpd_suffix": "et le traitement de mes données pour l'organisation du SAHD 2026. *",
+    "submit_button": "Créer mon compte et m'inscrire",
+    "submit_loading": "Création du compte en cours...",
+    "success_title": "Inscription confirmée !",
+    "success_message": "Un email de confirmation a été envoyé à",
+    "check_email": "Vérifiez votre boîte mail",
+    "email_sent_from": "Un email de confirmation vous a été envoyé depuis admin@sahd-mali.org",
+    "event_info": "14–16 Mai 2026",
+    "event_location": "Palais des Congrès, Bamako, Mali",
+    "access_space": "Accéder à mon espace →",
+    "categories": {
+      "visiteur": "Visiteur Standard",
+      "visiteur_price": "Gratuit",
+      "visiteur_features": ["Accès aux panels publics", "Networking général", "Galerie et expositions", "Documentation digitale"],
+      "participant": "Participant Payant",
+      "participant_price": "25 000 FCFA",
+      "participant_features": ["Tout du Visiteur +", "Badge nominatif officiel", "Accès ateliers spécialisés", "Repas inclus (3 jours)", "Certificat de participation"],
+      "exposant": "Exposant ONG",
+      "exposant_price": "150 000 FCFA",
+      "exposant_features": ["Stand 3x3m", "Badge exposant (5)", "Logo sur supports", "Profil ONG plateforme", "Accès B2B networking"],
+      "vip": "VIP B2B",
+      "vip_price": "300 000 FCFA",
+      "vip_features": ["Tout Exposant +", "Lounge VIP exclusif", "RDV B2B pré-planifiés", "Table ronde bailleurs", "Couverture médiatique"]
+    },
+    "errors": {
+      "name_required": "Nom requis (min 2 caractères)",
+      "org_required": "Organisation requise",
+      "email_invalid": "Email invalide",
+      "password_required": "Mot de passe requis (min 8 caractères)",
+      "phone_required": "Téléphone requis",
+      "domain_required": "Domaine requis",
+      "country_required": "Pays requis",
+      "rgpd_required": "Vous devez accepter la politique de confidentialité"
+    }
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Accédez à votre espace personnel",
+    "email_label": "Email",
+    "email_placeholder": "votre@email.com",
+    "password_label": "Mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "submit": "Se connecter",
+    "submit_loading": "Connexion...",
+    "no_account": "Pas encore de compte ?",
+    "register_link": "S'inscrire",
+    "welcome_title": "Bienvenue au SAHD 2026 !",
+    "welcome_desc": "Pas encore de compte ?",
+    "welcome_action": "Rejoignez la plateforme nationale de l'action humanitaire au Mali.",
+    "register_action": "S'inscrire",
+    "already_registered_title": "Déjà inscrit ?",
+    "already_registered_desc": "Connectez-vous pour accéder à votre espace personnel SAHD 2026",
+    "login_action": "Se connecter",
+    "dates_label": "Dates",
+    "dates_value": "14 – 16 Mai 2026",
+    "location_label": "Lieu",
+    "location_value": "Palais des Congrès, Bamako",
+    "register_title": "Inscription",
+    "register_subtitle": "Créez votre compte SAHD 2026",
+    "full_name_placeholder": "Nom complet *",
+    "org_placeholder": "Organisation *",
+    "phone_placeholder": "Téléphone *",
+    "password_register_placeholder": "Mot de passe (min. 8 caractères) *",
+    "domain_select": "Domaine *",
+    "country_select": "Pays *",
+    "rgpd_label": "J'accepte la",
+    "rgpd_link": "politique de confidentialité",
+    "register_button": "Créer mon compte",
+    "register_loading": "Création en cours...",
+    "success_title": "Inscription confirmée !",
+    "success_message": "Email envoyé à",
+    "access_space": "Mon espace →",
+    "error_invalid": "Email ou mot de passe incorrect",
+    "error_email_exists": "Email déjà inscrit. Connectez-vous.",
+    "error_generic": "Erreur inattendue",
+    "categories": {
+      "visiteur": "Visiteur",
+      "visiteur_price": "Gratuit",
+      "participant": "Participant",
+      "participant_price": "25 000 FCFA",
+      "exposant": "Exposant ONG",
+      "exposant_price": "150 000 FCFA",
+      "vip": "VIP B2B",
+      "vip_price": "300 000 FCFA"
+    }
+  },
+  "dashboard": {
+    "loading": "Chargement de votre espace...",
+    "no_profile": "Aucun profil trouvé.",
+    "register": "S'inscrire",
+    "logout": "Déconnexion",
+    "overview": "Vue d'ensemble",
+    "my_badge": "Mon Badge",
+    "my_panels": "Mes Panels",
+    "tab_messages": "Messages",
+    "stats": {
+      "badge_number": "N° Badge",
+      "panels_reserved": "Panels réservés",
+      "country": "Pays",
+      "domain": "Domaine"
+    },
+    "my_info": "Mes informations",
+    "labels": {
+      "full_name": "Nom complet",
+      "organization": "Organisation",
+      "email": "Email",
+      "phone": "Téléphone",
+      "category": "Catégorie",
+      "domain": "Domaine",
+      "country": "Pays",
+      "badge_number": "N° Badge"
+    },
+    "badge": {
+      "title": "Mon Badge",
+      "badge_number": "#",
+      "download": "Voir et télécharger →",
+      "download_pdf": "Télécharger mon badge (PDF)",
+      "generating": "Génération en cours...",
+      "qr_info": "Le badge contient un QR code unique pour vérification à l'entrée",
+      "instructions_title": "Comment utiliser votre badge ?",
+      "instructions": [
+        "Téléchargez et imprimez votre badge ou gardez-le sur votre téléphone",
+        "Présentez le QR code à l'entrée du Palais des Congrès",
+        "Le badge est personnel et non transférable"
+      ]
+    },
+    "event": {
+      "dates": "14 – 16 Mai 2026",
+      "location": "Palais des Congrès, Bamako"
+    },
+    "status": {
+      "validated": "Inscription validée",
+      "pending": "En attente de validation",
+      "validated_desc": "Votre badge est prêt à télécharger",
+      "pending_desc": "Validation sous 24–48h ouvrables"
+    },
+    "quick_actions": "Actions rapides",
+    "actions": {
+      "download_badge": "Télécharger mon badge",
+      "view_program": "Voir le programme",
+      "b2b_space": "Espace B2B VIP"
+    },
+    "panels": {
+      "title": "Mes réservations de panels",
+      "reserve_panel": "+ Réserver un panel",
+      "empty_title": "Aucun panel réservé",
+      "empty_desc": "Explorez le programme et réservez vos places",
+      "view_program": "Voir le programme",
+      "day": "Jour",
+      "confirmed": "Confirmé",
+      "details": "Détails →",
+      "hour": "Heure"
+    },
+    "messages": {
+      "title": "Messagerie interne",
+      "count": "0 message",
+      "empty_title": "Aucun message pour le moment",
+      "empty_desc": "La messagerie B2B est disponible pour les participants VIP",
+      "access_b2b": "Accéder à l'espace B2B →"
+    }
+  },
+  "b2b": {
+    "title": "Espace Networking B2B",
+    "subtitle": "Rencontrez des partenaires stratégiques, planifiez des rendez-vous et échangez en direct",
+    "restricted": "Accès restreint – Exposants & Participants B2B",
+    "tabs": {
+      "directory": "Annuaire ONG",
+      "meetings": "Mes RDV",
+      "chat": "Messagerie"
+    },
+    "directory": {
+      "search_placeholder": "Rechercher une ONG...",
+      "filter": "Filtrer par domaine"
+    },
+    "meetings": {
+      "title": "Mes rendez-vous",
+      "empty_title": "Aucun rendez-vous planifié",
+      "empty_desc": "Parcourez l'annuaire et proposez des rendez-vous aux ONG qui vous intéressent",
+      "request_meeting": "Demander un rendez-vous"
+    },
+    "modal": {
+      "title": "Planifier un rendez-vous",
+      "with": "avec",
+      "select_day": "Choisir un jour",
+      "select_time": "Choisir un créneau",
+      "confirm": "Envoyer la demande",
+      "cancel": "Annuler",
+      "success": "Demande de RDV envoyée à",
+      "for_date": "pour le",
+      "error_no_time": "Veuillez sélectionner un créneau"
+    },
+    "chat": {
+      "title": "Messagerie directe",
+      "empty_title": "Aucune conversation",
+      "empty_desc": "Les conversations apparaîtront ici après acceptation d'un rendez-vous B2B"
+    }
+  },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "updated": "Dernière mise à jour : Mars 2026",
+    "sections": {
+      "data_collection": "1. Collecte des données",
+      "data_collection_text": "Dans le cadre de l'organisation du Salon de l'Action Humanitaire et du Développement (SAHD) 2026, nous collectons les données personnelles suivantes : nom et prénom, adresse email, numéro de téléphone, organisation, domaine d'intervention.",
+      "data_use": "2. Utilisation des données",
+      "data_use_text": "Vos données sont utilisées exclusivement pour : la gestion de votre inscription au SAHD, l'envoi de communications relatives à l'événement, la génération de votre badge d'accès, et la facilitation du networking B2B si applicable.",
+      "legal_basis": "3. Base légale (RGPD)",
+      "legal_basis_text": "Le traitement de vos données repose sur votre consentement explicite donné lors de l'inscription. Vous pouvez retirer ce consentement à tout moment.",
+      "retention": "4. Conservation",
+      "retention_text": "Vos données sont conservées pendant 24 mois après l'événement, puis supprimées automatiquement.",
+      "rights": "5. Vos droits",
+      "rights_text": "Conformément au RGPD, vous disposez des droits d'accès, rectification, effacement, portabilité et opposition. Pour exercer ces droits, contactez :",
+      "cookies": "6. Cookies",
+      "cookies_text": "Nous utilisons des cookies techniques (nécessaires au fonctionnement) et des cookies analytiques (avec votre consentement). Vous pouvez gérer vos préférences via la bannière de consentement.",
+      "contact": "7. Contact DPO",
+      "contact_text": "Pour toute question relative à vos données :"
+    }
   }
 }

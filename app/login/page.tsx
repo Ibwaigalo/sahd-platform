@@ -8,31 +8,65 @@ import toast from 'react-hot-toast'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useLang } from '@/lib/lang-context'
+import fr from '@/messages/fr.json'
+import en from '@/messages/en.json'
+
+function getNestedValue(obj: any, path: string): string {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj) || path
+}
+
+const errorMessagesFR: Record<string, string> = {
+  'errors.name_required': 'Nom requis (min 2 caractères)',
+  'errors.org_required': 'Organisation requise',
+  'errors.email_invalid': 'Email invalide',
+  'errors.password_required': 'Mot de passe requis',
+  'errors.phone_required': 'Téléphone requis',
+  'errors.domain_required': 'Domaine requis',
+  'errors.country_required': 'Pays requis',
+  'errors.rgpd_required': 'Vous devez accepter la politique de confidentialité',
+}
+
+const errorMessagesEN: Record<string, string> = {
+  'errors.name_required': 'Name required (min 2 characters)',
+  'errors.org_required': 'Organization required',
+  'errors.email_invalid': 'Invalid email',
+  'errors.password_required': 'Password required',
+  'errors.phone_required': 'Phone required',
+  'errors.domain_required': 'Field required',
+  'errors.country_required': 'Country required',
+  'errors.rgpd_required': 'You must accept the privacy policy',
+}
+
+const getErrorMsg = (key: string, lang: string) => {
+  const msgs = lang === 'fr' ? errorMessagesFR : errorMessagesEN
+  return msgs[key] || key
+}
 
 const loginSchema = z.object({
-  email: z.string().email('Email invalide'),
-  password: z.string().min(1, 'Mot de passe requis'),
+  email: z.string().email('errors.email_invalid'),
+  password: z.string().min(1, 'errors.password_required'),
 })
 
 const registerSchema = z.object({
-  fullName: z.string().min(2, 'Nom requis (min 2 caractères)'),
-  organization: z.string().min(2, 'Organisation requise'),
-  email: z.string().email('Email invalide'),
-  password: z.string().min(8, 'Min. 8 caractères'),
-  phone: z.string().min(8, 'Téléphone requis'),
-  domain: z.string().min(1, 'Domaine requis'),
-  country: z.string().min(1, 'Pays requis'),
-  rgpd: z.literal(true, { errorMap: () => ({ message: 'Vous devez accepter la politique de confidentialité' }) }),
+  fullName: z.string().min(2, 'errors.name_required'),
+  organization: z.string().min(2, 'errors.org_required'),
+  email: z.string().email('errors.email_invalid'),
+  password: z.string().min(8, 'errors.password_required'),
+  phone: z.string().min(8, 'errors.phone_required'),
+  domain: z.string().min(1, 'errors.domain_required'),
+  country: z.string().min(1, 'errors.country_required'),
+  rgpd: z.literal(true, { errorMap: () => ({ message: 'errors.rgpd_required' }) }),
 })
 
 type LoginData = z.infer<typeof loginSchema>
 type RegisterData = z.infer<typeof registerSchema>
 
 const categories = [
-  { id: 'visiteur', label: 'Visiteur', price: 'Gratuit', icon: User },
-  { id: 'participant', label: 'Participant', price: '25 000 FCFA', icon: Building2 },
-  { id: 'exposant', label: 'Exposant ONG', price: '150 000 FCFA', icon: Star },
-  { id: 'vip_b2b', label: 'VIP B2B', price: '300 000 FCFA', icon: Crown },
+  { id: 'visiteur', labelKey: 'categories.visiteur', priceKey: 'categories.visiteur_price', icon: User },
+  { id: 'participant', labelKey: 'categories.participant', priceKey: 'categories.participant_price', icon: Building2 },
+  { id: 'exposant', labelKey: 'categories.exposant', priceKey: 'categories.exposant_price', icon: Star },
+  { id: 'vip_b2b', labelKey: 'categories.vip', priceKey: 'categories.vip_price', icon: Crown },
 ]
 
 const s = {
@@ -55,7 +89,7 @@ const s = {
   field: { display: 'flex', flexDirection: 'column', gap: 4 } as React.CSSProperties,
 }
 
-function LoginForm({ onSwitch }: { onSwitch: () => void }) {
+function LoginForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t: any, getLabel: (k: string) => string, lang: string }) {
   const [loading, setLoading] = useState(false)
   const [showPw, setShowPw] = useState(false)
   const router = useRouter()
@@ -65,10 +99,10 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
     setLoading(true)
     try {
       const { error } = await supabase.auth.signInWithPassword({ email: data.email, password: data.password })
-      if (error) { toast.error('Email ou mot de passe incorrect'); return }
-      toast.success('Connexion réussie !')
+      if (error) { toast.error(getLabel('error_invalid')); return }
+      toast.success(getLabel('submit_loading').replace('...', ''))
       router.push('/dashboard')
-    } catch { toast.error('Erreur inattendue') }
+    } catch { toast.error(getLabel('error_generic')) }
     finally { setLoading(false) }
   }
 
@@ -77,43 +111,43 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
       <div style={{ textAlign: 'center', marginBottom: 4, display: 'flex', justifyContent: 'center' }}>
         <img src="/logo-sahd-web.png" alt="SAHD" style={{ height: 60, width: 'auto', objectFit: 'contain', display: 'block' }} />
       </div>
-      <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', textAlign: 'center', margin: 0 }}>Connexion</h2>
-      <p style={{ fontSize: '0.85rem', color: '#6b7280', textAlign: 'center', margin: 0 }}>Accédez à votre espace personnel</p>
+      <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', textAlign: 'center', margin: 0 }}>{getLabel('title')}</h2>
+      <p style={{ fontSize: '0.85rem', color: '#6b7280', textAlign: 'center', margin: 0 }}>{getLabel('subtitle')}</p>
 
       <div style={s.field}>
-        <input {...register('email')} type="email" placeholder="Email" style={s.input} />
-        {errors.email && <span style={s.err}>{errors.email.message}</span>}
+        <input {...register('email')} type="email" placeholder={getLabel('email_placeholder')} style={s.input} />
+        {errors.email && <span style={s.err}>{getErrorMsg(errors.email.message, lang)}</span>}
       </div>
 
       <div style={s.field}>
         <div style={{ position: 'relative' }}>
-          <input {...register('password')} type={showPw ? 'text' : 'password'} placeholder="Mot de passe" style={s.input} />
+          <input {...register('password')} type={showPw ? 'text' : 'password'} placeholder={getLabel('password_label')} style={s.input} />
           <button type="button" onClick={() => setShowPw(!showPw)} style={s.eye}>
             {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {errors.password && <span style={s.err}>{errors.password.message}</span>}
+        {errors.password && <span style={s.err}>{getErrorMsg(errors.password.message, lang)}</span>}
       </div>
 
       <Link href="/forgot-password" style={{ fontSize: '0.82rem', color: '#1e3a8a', textAlign: 'right', textDecoration: 'underline' }}>
-        Mot de passe oublié ?
+        {getLabel('forgot_password')}
       </Link>
 
       <button type="submit" disabled={loading} style={{ ...s.btn(), opacity: loading ? 0.5 : 1 }}>
-        {loading ? '⏳ Connexion...' : 'Se connecter'}
+        {loading ? getLabel('submit_loading') : getLabel('submit')}
       </button>
 
       <p style={{ textAlign: 'center', fontSize: '0.85rem', color: '#6b7280', marginTop: 4 }}>
-        Pas encore de compte ?{' '}
+        {getLabel('no_account')}{' '}
         <button type="button" onClick={onSwitch} style={{ background: 'none', border: 'none', color: '#1e3a8a', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif' }}>
-          S'inscrire
+          {getLabel('register_link')}
         </button>
       </p>
     </form>
   )
 }
 
-function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
+function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t: any, getLabel: (k: string) => string, lang: string }) {
   const [loading, setLoading] = useState(false)
   const [showPw, setShowPw] = useState(false)
   const [selectedCat, setSelectedCat] = useState('visiteur')
@@ -125,13 +159,13 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
     setLoading(true)
     try {
       const { data: existing } = await supabase.from('profiles').select('id').eq('email', data.email).maybeSingle()
-      if (existing) { toast.error('Email déjà inscrit. Connectez-vous.'); return }
+      if (existing) { toast.error(getLabel('error_email_exists')); return }
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email, password: data.password,
         options: { data: { full_name: data.fullName, organization: data.organization } }
       })
       if (authError) { toast.error(authError.message); return }
-      if (!authData.user) { toast.error('Erreur création compte'); return }
+      if (!authData.user) { toast.error(getLabel('error_generic')); return }
       const badgeNumber = `SAHD-2026-${selectedCat.toUpperCase().slice(0, 3)}-${Math.floor(1000 + Math.random() * 9000)}`
       await supabase.from('profiles').insert({
         user_id: authData.user.id, full_name: data.fullName, organization: data.organization,
@@ -146,7 +180,7 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
       } catch {}
       setUserEmail(data.email)
       setSubmitted(true)
-      toast.success('Inscription réussie !')
+      toast.success(getLabel('success_title'))
     } catch (err: any) { toast.error(err.message) }
     finally { setLoading(false) }
   }
@@ -155,19 +189,18 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, textAlign: 'center', width: '100%' }}>
         <div style={{ fontSize: '3.5rem' }}>✅</div>
-        <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', margin: 0 }}>Inscription confirmée !</h2>
-        <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>Email envoyé à <strong>{userEmail}</strong></p>
-        <Link href="/dashboard" style={{ ...s.btn(), display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: 16 }}>Mon espace →</Link>
+        <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', margin: 0 }}>{getLabel('success_title')}</h2>
+        <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>{getLabel('success_message')} <strong>{userEmail}</strong></p>
+        <Link href="/dashboard" style={{ ...s.btn(), display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: 16 }}>{getLabel('access_space')}</Link>
       </div>
     )
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
-      <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', textAlign: 'center', margin: 0 }}>Inscription</h2>
-      <p style={{ fontSize: '0.85rem', color: '#6b7280', textAlign: 'center', margin: 0 }}>Créez votre compte SAHD 2026</p>
+      <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', textAlign: 'center', margin: 0 }}>{getLabel('register_title')}</h2>
+      <p style={{ fontSize: '0.85rem', color: '#6b7280', textAlign: 'center', margin: 0 }}>{getLabel('register_subtitle')}</p>
 
-      {/* Catégories */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         {categories.map(cat => {
           const Icon = cat.icon
@@ -181,89 +214,84 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               gap: 3, fontFamily: 'Outfit, sans-serif',
             }}>
               <Icon size={16} />
-              <span>{cat.label}</span>
-              <span style={{ fontSize: '0.7rem', color: '#FEA621', fontWeight: 700 }}>{cat.price}</span>
+              <span>{getLabel(cat.labelKey)}</span>
+              <span style={{ fontSize: '0.7rem', color: '#FEA621', fontWeight: 700 }}>{getLabel(cat.priceKey)}</span>
             </button>
           )
         })}
       </div>
 
-      {/* Nom + Organisation */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div style={s.field}>
-          <input {...register('fullName')} placeholder="Nom complet *" style={s.input} />
-          {errors.fullName && <span style={s.err}>{errors.fullName.message}</span>}
+          <input {...register('fullName')} placeholder={getLabel('full_name_placeholder')} style={s.input} />
+          {errors.fullName && <span style={s.err}>{getErrorMsg(errors.fullName.message, lang)}</span>}
         </div>
         <div style={s.field}>
-          <input {...register('organization')} placeholder="Organisation *" style={s.input} />
-          {errors.organization && <span style={s.err}>{errors.organization.message}</span>}
+          <input {...register('organization')} placeholder={getLabel('org_placeholder')} style={s.input} />
+          {errors.organization && <span style={s.err}>{getErrorMsg(errors.organization.message, lang)}</span>}
         </div>
       </div>
 
-      {/* Email + Téléphone */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div style={s.field}>
-          <input {...register('email')} type="email" placeholder="Email *" style={s.input} />
-          {errors.email && <span style={s.err}>{errors.email.message}</span>}
+          <input {...register('email')} type="email" placeholder={getLabel('email_placeholder')} style={s.input} />
+          {errors.email && <span style={s.err}>{getErrorMsg(errors.email.message, lang)}</span>}
         </div>
         <div style={s.field}>
-          <input {...register('phone')} placeholder="Téléphone *" style={s.input} />
-          {errors.phone && <span style={s.err}>{errors.phone.message}</span>}
+          <input {...register('phone')} placeholder={getLabel('phone_placeholder')} style={s.input} />
+          {errors.phone && <span style={s.err}>{getErrorMsg(errors.phone.message, lang)}</span>}
         </div>
       </div>
 
-      {/* Mot de passe */}
       <div style={s.field}>
         <div style={{ position: 'relative' }}>
-          <input {...register('password')} type={showPw ? 'text' : 'password'} placeholder="Mot de passe (min. 8 caractères) *" style={s.input} />
+          <input {...register('password')} type={showPw ? 'text' : 'password'} placeholder={getLabel('password_register_placeholder')} style={s.input} />
           <button type="button" onClick={() => setShowPw(!showPw)} style={s.eye}>
             {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {errors.password && <span style={s.err}>{errors.password.message}</span>}
+        {errors.password && <span style={s.err}>{getErrorMsg(errors.password.message, lang)}</span>}
       </div>
 
-      {/* Domaine + Pays */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div style={s.field}>
           <select {...register('domain')} style={{ ...s.input, cursor: 'pointer' }}>
-            <option value="">Domaine *</option>
+            <option value="">{getLabel('domain_select')}</option>
             <option>Aide humanitaire</option><option>Santé</option><option>Éducation</option>
             <option>Nutrition & Sécurité alimentaire</option><option>Protection de l'enfance</option>
             <option>Genre & Développement</option><option>Eau & Assainissement</option>
             <option>Gouvernance</option><option>Environnement</option><option>Innovation & Tech</option>
             <option>Autre</option>
           </select>
-          {errors.domain && <span style={s.err}>{errors.domain.message}</span>}
+          {errors.domain && <span style={s.err}>{getErrorMsg(errors.domain.message, lang)}</span>}
         </div>
         <div style={s.field}>
           <select {...register('country')} style={{ ...s.input, cursor: 'pointer' }}>
-            <option value="">Pays *</option>
+            <option value="">{getLabel('country_select')}</option>
             <option>Mali</option><option>Sénégal</option><option>Côte d'Ivoire</option>
             <option>Burkina Faso</option><option>Niger</option><option>Guinée</option>
             <option>Mauritanie</option><option>France</option><option>Autre</option>
           </select>
-          {errors.country && <span style={s.err}>{errors.country.message}</span>}
+          {errors.country && <span style={s.err}>{getErrorMsg(errors.country.message, lang)}</span>}
         </div>
       </div>
 
-      {/* RGPD */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: '0.8rem', color: '#6b7280' }}>
         <input type="checkbox" {...register('rgpd')} id="rgpd" style={{ marginTop: 3, flexShrink: 0, width: 16, height: 16 }} />
         <label htmlFor="rgpd">
-          J'accepte la <Link href="/privacy" style={{ color: '#1e3a8a', textDecoration: 'underline' }}>politique de confidentialité</Link> *
+          {getLabel('rgpd_label')} <Link href="/privacy" style={{ color: '#1e3a8a', textDecoration: 'underline' }}>{getLabel('rgpd_link')}</Link> *
         </label>
       </div>
-      {errors.rgpd && <span style={s.err}>{errors.rgpd.message}</span>}
+      {errors.rgpd && <span style={s.err}>{getErrorMsg(errors.rgpd.message, lang)}</span>}
 
       <button type="submit" disabled={loading} style={{ ...s.btn('#FEA621'), opacity: loading ? 0.5 : 1 }}>
-        {loading ? '⏳ Création en cours...' : '🎉 Créer mon compte'}
+        {loading ? getLabel('register_loading') : getLabel('register_button')}
       </button>
 
       <p style={{ textAlign: 'center', fontSize: '0.85rem', color: '#6b7280', marginTop: 4 }}>
-        Déjà inscrit ?{' '}
+        {getLabel('already_registered_title')}{' '}
         <button type="button" onClick={onSwitch} style={{ background: 'none', border: 'none', color: '#1e3a8a', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif' }}>
-          Se connecter
+          {getLabel('login_action')}
         </button>
       </p>
     </form>
@@ -271,6 +299,10 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
 }
 
 export default function LoginPage() {
+  const { lang } = useLang()
+  const t = lang === 'fr' ? fr : en
+  const getLabel = (key: string) => getNestedValue(t.login, key) || getNestedValue(t.inscription, key) || key
+  
   const [showRegister, setShowRegister] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -291,14 +323,14 @@ export default function LoginPage() {
     cursor: 'pointer', fontFamily: 'Outfit, sans-serif', marginTop: 8,
   }
 
-  // ── VERSION MOBILE ──
+  const props = { t, getLabel, lang }
+
   if (isMobile) {
     return (
       <div style={{
         minHeight: '100vh', background: 'linear-gradient(135deg, #0b185f 0%, #1e3a8a 50%, #0b185f 100%)',
         padding: '70px 0 0', fontFamily: 'Outfit, sans-serif',
       }}>
-        {/* Header mobile bleu */}
         <div style={{
           background: 'linear-gradient(135deg, #1e3a8a 0%, #0b185f 100%)',
           padding: '24px 20px', textAlign: 'center', color: '#fff',
@@ -307,34 +339,32 @@ export default function LoginPage() {
             <img src="/logo-sahd-web.png" alt="SAHD" style={{ height: 44, width: 'auto', objectFit: 'contain', display: 'block' }} />
           </div>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 900, margin: '0 0 6px' }}>
-            {showRegister ? 'Créez votre compte' : 'Bienvenue au SAHD 2026 !'}
+            {showRegister ? getLabel('register_title') : getLabel('welcome_title')}
           </h3>
           <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.75)', margin: 0 }}>
-            {showRegister ? 'Déjà inscrit ?' : 'Pas encore de compte ?'}{' '}
+            {showRegister ? getLabel('already_registered_title') : getLabel('welcome_desc')}{' '}
             <button onClick={() => setShowRegister(!showRegister)} style={{
               background: 'none', border: 'none', color: '#FEA621', fontWeight: 700,
               cursor: 'pointer', textDecoration: 'underline', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif',
             }}>
-              {showRegister ? 'Se connecter' : "S'inscrire"}
+              {showRegister ? getLabel('login_action') : getLabel('register_action')}
             </button>
           </p>
         </div>
 
-        {/* Formulaire mobile */}
         <div style={{
           background: '#fff', borderRadius: '20px 20px 0 0',
           padding: '28px 20px 40px', minHeight: 'calc(100vh - 200px)',
         }}>
           {showRegister
-            ? <RegisterForm onSwitch={() => setShowRegister(false)} />
-            : <LoginForm onSwitch={() => setShowRegister(true)} />
+            ? <RegisterForm {...props} onSwitch={() => setShowRegister(false)} />
+            : <LoginForm {...props} onSwitch={() => setShowRegister(true)} />
           }
         </div>
       </div>
     )
   }
 
-  // ── VERSION DESKTOP ──
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -348,7 +378,6 @@ export default function LoginPage() {
         overflow: 'hidden', display: 'flex', minHeight: 620,
       }}>
 
-        {/* Panneau bleu gauche */}
         <div style={{
           width: showRegister ? '32%' : '42%',
           background: 'linear-gradient(155deg, #1e3a8a 0%, #0b185f 100%)',
@@ -362,39 +391,37 @@ export default function LoginPage() {
 
           {showRegister ? (
             <>
-              <h3 style={{ fontSize: '1.6rem', fontWeight: 900, margin: '0 0 12px', lineHeight: 1.2 }}>Déjà inscrit ?</h3>
+              <h3 style={{ fontSize: '1.6rem', fontWeight: 900, margin: '0 0 12px', lineHeight: 1.2 }}>{getLabel('already_registered_title')}</h3>
               <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.78)', margin: '0 0 28px', lineHeight: 1.7 }}>
-                Connectez-vous pour accéder à votre espace personnel SAHD 2026
+                {getLabel('already_registered_desc')}
               </p>
-              <button onClick={() => setShowRegister(false)} style={toggleBtnStyle}>Se connecter</button>
+              <button onClick={() => setShowRegister(false)} style={toggleBtnStyle}>{getLabel('login_action')}</button>
             </>
           ) : (
             <>
-              <h3 style={{ fontSize: '1.6rem', fontWeight: 900, margin: '0 0 12px', lineHeight: 1.2 }}>Bienvenue au SAHD 2026 !</h3>
+              <h3 style={{ fontSize: '1.6rem', fontWeight: 900, margin: '0 0 12px', lineHeight: 1.2 }}>{getLabel('welcome_title')}</h3>
               <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.78)', margin: '0 0 28px', lineHeight: 1.7 }}>
-                Pas encore de compte ?<br />Rejoignez la plateforme nationale de l'action humanitaire au Mali.
+                {getLabel('welcome_action')}
               </p>
-              <button onClick={() => setShowRegister(true)} style={{ ...toggleBtnStyle, background: '#FEA621', border: 'none' }}>S'inscrire</button>
+              <button onClick={() => setShowRegister(true)} style={{ ...toggleBtnStyle, background: '#FEA621', border: 'none' }}>{getLabel('register_action')}</button>
             </>
           )}
 
-          {/* Infos événement */}
           <div style={{ marginTop: 40, padding: '16px', background: 'rgba(255,255,255,0.08)', borderRadius: 14, width: '100%' }}>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', margin: '0 0 4px' }}>📅 Dates</p>
-            <p style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', margin: 0 }}>14 – 16 Mai 2026</p>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', margin: '8px 0 4px' }}>📍 Lieu</p>
-            <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff', margin: 0 }}>Palais des Congrès, Bamako</p>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', margin: '0 0 4px' }}>{getLabel('dates_label')}</p>
+            <p style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', margin: 0 }}>{getLabel('dates_value')}</p>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', margin: '8px 0 4px' }}>{getLabel('location_label')}</p>
+            <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff', margin: 0 }}>{getLabel('location_value')}</p>
           </div>
         </div>
 
-        {/* Formulaire droit */}
         <div style={{
           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
           padding: '3rem 4rem', overflowY: 'auto',
         }}>
           {showRegister
-            ? <RegisterForm onSwitch={() => setShowRegister(false)} />
-            : <LoginForm onSwitch={() => setShowRegister(true)} />
+            ? <RegisterForm {...props} onSwitch={() => setShowRegister(false)} />
+            : <LoginForm {...props} onSwitch={() => setShowRegister(true)} />
           }
         </div>
 
