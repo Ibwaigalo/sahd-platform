@@ -298,11 +298,16 @@ export default function HomePage() {
       <section className="py-12 px-4 bg-gray-50 border-t border-gray-100">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-400 text-xs uppercase tracking-widest mb-6 font-medium">{t.home.partners}</p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[...mockSponsors.platine, ...mockSponsors.or].map(sponsor => (
-              <a key={sponsor.id} href={sponsor.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-gray-200 sponsor-card shadow-sm hover:shadow-md transition-all">
-                <span className="text-lg">{sponsor.logo}</span>
-                <span className="font-bold text-gray-700 text-xs">{sponsor.name}</span>
+              <a key={sponsor.id} href={sponsor.url} target="_blank" rel="noopener noreferrer" 
+                className="flex flex-col items-center gap-2 bg-white px-4 py-4 rounded-2xl border border-gray-200 sponsor-card shadow-sm hover:shadow-lg hover:border-primary-200 transition-all">
+                {sponsor.logoUrl ? (
+                  <img src={sponsor.logoUrl} alt={sponsor.name} className="h-10 w-auto object-contain" />
+                ) : (
+                  <span className="text-3xl">{sponsor.logo}</span>
+                )}
+                <span className="font-bold text-gray-700 text-xs text-center">{sponsor.name}</span>
               </a>
             ))}
           </div>
