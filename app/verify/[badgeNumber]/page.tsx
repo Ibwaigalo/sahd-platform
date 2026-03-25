@@ -145,7 +145,9 @@ export default function VerifyPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-950 to-primary-900">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <img src="/logo-sahd-web.png" alt="SAHD 2026" className="h-16 mx-auto mb-4" style={{ filter: 'brightness(0) invert(1)' }} />
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <img src="/logo-sahd-web.png" alt="SAHD 2026" className="h-16 w-auto" />
+          </div>
           <div className="inline-flex items-center gap-2 bg-accent-orange text-white px-4 py-2 rounded-full text-sm font-bold">
             {profile.verified ? (
               <><CheckCircle size={16} /> {lang === 'fr' ? 'Badge vérifié' : 'Verified badge'}</>
