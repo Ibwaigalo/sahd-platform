@@ -1,10 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, MessageSquare, Users, Search, Filter } from 'lucide-react'
-import { mockNGOs } from '@/lib/mock-data'
+import { Calendar, MessageSquare, Users, Search, Filter, Star, Check, X, Clock, Building2, Briefcase } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { supabase } from '@/lib/supabase'
 import { useLang } from '@/lib/lang-context'
+import { RecommendedSection, MeetingModal, MatchmakingCard } from '@/components/MatchmakingCard'
+import { RealtimeChat, ConversationsList } from '@/components/RealtimeChat'
 import fr from '@/messages/fr.json'
 import en from '@/messages/en.json'
 
@@ -12,31 +14,171 @@ function getNestedValue(obj: any, path: string): string {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj) || path
 }
 
-const timeSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30']
-const daysFR = ['14 Mai 2026', '15 Mai 2026', '16 Mai 2026']
-const daysEN = ['May 14, 2026', 'May 15, 2026', 'May 16, 2026']
+const DOMAIN_LABELS: Record<string, { fr: string; en: string }> = {
+  'sante': { fr: 'Santé', en: 'Health' },
+  'education': { fr: 'Éducation', en: 'Education' },
+  'nutrition': { fr: 'Nutrition', en: 'Nutrition' },
+  'eau': { fr: 'Eau/Assainissement', en: 'Water & Sanitation' },
+  'protection': { fr: 'Protection', en: 'Protection' },
+  'genre': { fr: 'Genre', en: 'Gender' },
+  'climat': { fr: 'Climat', en: 'Climate' },
+  'securite-alimentaire': { fr: 'Sécurité Alimentaire', en: 'Food Security' },
+  'financement': { fr: 'Financement', en: 'Funding' },
+  'technologie': { fr: 'Technologie', en: 'Technology' },
+}
+
+const categoryColors: Record<string, string> = {
+  vip_b2b: 'bg-amber-500',
+  exposant: 'bg-primary-700',
+  participant: 'bg-blue-600',
+}
+
+const categoryLabels: Record<string, { fr: string; en: string }> = {
+  vip_b2b: { fr: 'VIP B2B', en: 'VIP B2B' },
+  exposant: { fr: 'Exposant', en: 'Exhibitor' },
+  participant: { fr: 'Participant', en: 'Participant' },
+}
+
+interface MeetingRequest {
+  id: string
+  requester_id: string
+  target_id: string
+  meeting_date: string
+  meeting_time: string
+  status: string
+  message?: string
+  requester?: { full_name: string; organization: string }
+  target?: { full_name: string; organization: string }
+}
 
 export default function B2BPage() {
   const { lang } = useLang()
   const t = lang === 'fr' ? fr : en
   const getLabel = (key: string) => getNestedValue(t.b2b, key) || key
   
+  const [currentUser, setCurrentUser] = useState<any>(null)
   const [activeSection, setActiveSection] = useState<'directory' | 'meetings' | 'chat'>('directory')
-  const [meetingModal, setMeetingModal] = useState<typeof mockNGOs[0] | null>(null)
-  const days = lang === 'fr' ? daysFR : daysEN
-  const [selectedDay, setSelectedDay] = useState(days[0])
-  const [selectedTime, setSelectedTime] = useState('')
+  const [meetingModal, setMeetingModal] = useState<any>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filterDomain, setFilterDomain] = useState<string | null>(null)
+  const [allParticipants, setAllParticipants] = useState<any[]>([])
+  const [meetingRequests, setMeetingRequests] = useState<MeetingRequest[]>([])
+  const [selectedChatUser, setSelectedChatUser] = useState<{ id: string; name: string; org: string } | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const handleRequestMeeting = () => {
-    if (!selectedTime) {
-      toast.error(getLabel('modal.error_no_time'))
-      return
+  const isVIP = currentUser?.category === 'vip_b2b' || currentUser?.category === 'exposant'
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        setLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single()
+      
+      setCurrentUser({ ...profile, id: user.id })
+
+      const { data: participants } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('verified', true)
+        .neq('user_id', user.id)
+        .not('category', 'eq', 'visiteur')
+        .order('created_at', { ascending: false })
+        .limit(50)
+      
+      setAllParticipants(participants || [])
+
+      const { data: requests } = await supabase
+        .from('meeting_requests')
+        .select(`
+          *,
+          requester:user_profiles!requester_id(full_name, organization),
+          target:user_profiles!target_id(full_name, organization)
+        `)
+        .or(`requester_id.eq.${user.id},target_id.eq.${user.id}`)
+        .order('created_at', { ascending: false })
+      
+      setMeetingRequests(requests || [])
+      setLoading(false)
     }
-    toast.success(
-      `${getLabel('modal.success')} ${meetingModal?.name} ${getLabel('modal.for_date')} ${selectedDay} ${selectedTime}`
+
+    fetchData()
+
+    const channel = supabase
+      .channel('meeting-requests')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'meeting_requests'
+      }, () => {
+        fetchData()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  const handleResponse = async (requestId: string, accept: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('meeting_requests')
+        .update({ status: accept ? 'accepted' : 'declined' })
+        .eq('id', requestId)
+
+      if (error) throw error
+
+      toast.success(
+        accept 
+          ? (lang === 'fr' ? 'Rendez-vous confirmé !' : 'Meeting confirmed!')
+          : (lang === 'fr' ? 'Demande déclinée' : 'Request declined')
+      )
+
+      const { data: requests } = await supabase
+        .from('meeting_requests')
+        .select(`
+          *,
+          requester:user_profiles!requester_id(full_name, organization),
+          target:user_profiles!target_id(full_name, organization)
+        `)
+        .or(`requester_id.eq.${currentUser?.id},target_id.eq.${currentUser?.id}`)
+      
+      setMeetingRequests(requests || [])
+    } catch (error) {
+      toast.error(lang === 'fr' ? 'Erreur' : 'Error')
+    }
+  }
+
+  const filteredParticipants = allParticipants.filter(p => {
+    const matchSearch = !searchQuery || 
+      p.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.organization?.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchDomain = !filterDomain || p.domains?.includes(filterDomain)
+    return matchSearch && matchDomain
+  })
+
+  const formatDate = (date: string) => {
+    const d = new Date(date)
+    return d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
+      day: 'numeric',
+      month: 'short'
+    })
+  }
+
+  if (loading) {
+    return (
+      <div className="pt-20 bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="animate-spin w-10 h-10 border-4 border-primary-900 border-t-transparent rounded-full" />
+      </div>
     )
-    setMeetingModal(null)
-    setSelectedTime('')
   }
 
   return (
@@ -80,73 +222,109 @@ export default function B2BPage() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {activeSection === 'directory' && (
           <div>
+            {currentUser && isVIP && (
+              <RecommendedSection userId={currentUser.id} isVIP={isVIP} />
+            )}
+
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-primary-900">
+                {lang === 'fr' ? 'Tous les participants' : 'All participants'}
+              </h2>
+              <span className="text-sm text-gray-500">
+                {filteredParticipants.length} {lang === 'fr' ? 'participants' : 'participants'}
+              </span>
+            </div>
+
             <div className="flex flex-col md:flex-row gap-4 mb-8">
               <div className="relative flex-1">
                 <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
-                  placeholder={getLabel('directory.search_placeholder')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={lang === 'fr' ? 'Rechercher par nom ou organisation...' : 'Search by name or organization...'}
                   className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-primary-700 bg-white"
                 />
               </div>
-              <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-600 px-5 py-3 rounded-2xl font-medium hover:bg-gray-50">
-                <Filter size={16} /> {getLabel('directory.filter')}
-              </button>
+              <select
+                value={filterDomain || ''}
+                onChange={(e) => setFilterDomain(e.target.value || null)}
+                className="px-5 py-3 border border-gray-300 rounded-2xl bg-white focus:outline-none focus:border-primary-700"
+              >
+                <option value="">{lang === 'fr' ? 'Tous les domaines' : 'All domains'}</option>
+                {Object.entries(DOMAIN_LABELS).map(([key, labels]) => (
+                  <option key={key} value={key}>{labels[lang]}</option>
+                ))}
+              </select>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockNGOs.map((ngo, i) => (
+              {filteredParticipants.map((participant, i) => (
                 <motion.div
-                  key={ngo.id}
+                  key={participant.id || participant.user_id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden card-lift"
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
                 >
-                  <div className="bg-gradient-to-br from-primary-50 to-blue-50 p-6 flex items-start gap-4">
-                    <div className="w-14 h-14 bg-primary-900 rounded-xl flex items-center justify-center text-3xl">
-                      {ngo.logo}
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-900 to-primary-700 flex items-center justify-center text-white font-bold text-sm">
+                      {participant.full_name?.split(' ').map(n => n[0]).slice(0, 2).join('')}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="font-black text-primary-900 text-lg leading-tight">{ngo.acronym}</h3>
-                          <p className="text-gray-600 text-sm truncate">{ngo.name}</p>
-                        </div>
-                      </div>
-                      <span className="bg-primary-100 text-primary-800 text-xs font-bold px-2 py-0.5 rounded-full mt-1 inline-block">
-                        {ngo.domain}
-                      </span>
+                      <h3 className="font-bold text-gray-900 truncate">{participant.full_name}</h3>
+                      <p className="text-sm text-gray-500 flex items-center gap-1 truncate">
+                        <Building2 size={12} />
+                        {participant.organization}
+                      </p>
                     </div>
+                    <span className={`${categoryColors[participant.category] || 'bg-gray-500'} text-white text-xs px-2 py-1 rounded-full font-medium flex-shrink-0`}>
+                      {categoryLabels[participant.category]?.[lang] || participant.category}
+                    </span>
                   </div>
-                  <div className="p-5">
-                    <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">{ngo.description}</p>
-                    <div className="grid grid-cols-3 gap-2 mb-4 text-center">
-                      {[
-                        { label: lang === 'fr' ? 'Staff' : 'Staff', value: ngo.employees },
-                        { label: lang === 'fr' ? 'Bénéficiaires' : 'Beneficiaries', value: ngo.beneficiaires },
-                        { label: lang === 'fr' ? 'Régions' : 'Regions', value: ngo.regions.length },
-                      ].map(stat => (
-                        <div key={stat.label} className="bg-gray-50 rounded-lg p-2">
-                          <div className="font-black text-primary-900 text-sm">{stat.value}</div>
-                          <div className="text-gray-500 text-xs">{stat.label}</div>
-                        </div>
+
+                  {participant.domains?.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {participant.domains.slice(0, 3).map(domain => (
+                        <span key={domain} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+                          {DOMAIN_LABELS[domain]?.[lang] || domain}
+                        </span>
                       ))}
+                      {participant.domains.length > 3 && (
+                        <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
+                          +{participant.domains.length - 3}
+                        </span>
+                      )}
                     </div>
-                    <div className="flex gap-2">
+                  )}
+
+                  {participant.looking_for && (
+                    <p className="text-xs text-blue-600 mb-3 line-clamp-1 flex items-center gap-1">
+                      <Briefcase size={10} />
+                      {participant.looking_for}
+                    </p>
+                  )}
+
+                  {isVIP && (
+                    <div className="flex gap-2 mt-3">
                       <button
-                        onClick={() => setMeetingModal(ngo)}
-                        className="flex-1 bg-primary-900 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-primary-800 transition-colors"
+                        onClick={() => setMeetingModal(participant)}
+                        className="flex-1 bg-primary-900 text-white py-2 rounded-xl text-sm font-semibold hover:bg-primary-800 transition-colors flex items-center justify-center gap-1"
                       >
-                        📅 {getLabel('meetings.request_meeting')}
+                        <Calendar size={14} />
+                        {lang === 'fr' ? 'RDV' : 'Meeting'}
                       </button>
                       <button
-                        onClick={() => toast.success(`${lang === 'fr' ? 'Message envoyé à' : 'Message sent to'} ${ngo.acronym}`)}
-                        className="px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm hover:bg-gray-50 transition-colors"
+                        onClick={() => setSelectedChatUser({
+                          id: participant.user_id,
+                          name: participant.full_name,
+                          org: participant.organization
+                        })}
+                        className="px-4 py-2 border border-gray-200 text-gray-600 rounded-xl text-sm hover:bg-gray-50 transition-colors"
                       >
-                        💬
+                        <MessageSquare size={14} />
                       </button>
                     </div>
-                  </div>
+                  )}
                 </motion.div>
               ))}
             </div>
@@ -154,102 +332,152 @@ export default function B2BPage() {
         )}
 
         {activeSection === 'meetings' && (
-          <div className="max-w-2xl">
+          <div className="max-w-3xl mx-auto">
             <h2 className="font-black text-primary-900 text-xl mb-6">{getLabel('meetings.title')}</h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
-              <Calendar size={48} className="mx-auto text-gray-300 mb-3" />
-              <p className="text-gray-500 font-semibold mb-1">{getLabel('meetings.empty_title')}</p>
-              <p className="text-gray-400 text-sm">{getLabel('meetings.empty_desc')}</p>
-              <button
-                onClick={() => setActiveSection('directory')}
-                className="mt-4 bg-primary-900 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-primary-800 transition-colors"
-              >
-                {getLabel('tabs.directory')} →
-              </button>
-            </div>
+            
+            {meetingRequests.length === 0 ? (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+                <Calendar size={48} className="mx-auto text-gray-300 mb-3" />
+                <p className="text-gray-500 font-semibold mb-1">{getLabel('meetings.empty_title')}</p>
+                <p className="text-gray-400 text-sm">{getLabel('meetings.empty_desc')}</p>
+                <button
+                  onClick={() => setActiveSection('directory')}
+                  className="mt-4 bg-primary-900 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-primary-800 transition-colors"
+                >
+                  {lang === 'fr' ? 'Explorer les participants' : 'Browse participants'} →
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {meetingRequests.map(request => {
+                  const isIncoming = request.target_id === currentUser?.id
+                  const otherPerson = isIncoming ? request.requester : request.target
+                  
+                  return (
+                    <motion.div
+                      key={request.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`bg-white rounded-2xl p-5 border ${
+                        request.status === 'pending' ? 'border-amber-200' : 'border-gray-100'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-900 to-primary-700 flex items-center justify-center text-white font-bold">
+                            {otherPerson?.full_name?.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-gray-900">{otherPerson?.full_name}</h3>
+                            <p className="text-sm text-gray-500">{otherPerson?.organization}</p>
+                          </div>
+                        </div>
+                        <span className={`text-xs px-3 py-1 rounded-full font-medium ${
+                          request.status === 'pending' ? 'bg-amber-100 text-amber-700' :
+                          request.status === 'accepted' ? 'bg-green-100 text-green-700' :
+                          request.status === 'declined' ? 'bg-red-100 text-red-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {request.status === 'pending' ? (lang === 'fr' ? 'En attente' : 'Pending') :
+                           request.status === 'accepted' ? (lang === 'fr' ? 'Confirmé' : 'Confirmed') :
+                           request.status === 'declined' ? (lang === 'fr' ? 'Décliné' : 'Declined') :
+                           (lang === 'fr' ? 'Annulé' : 'Cancelled')}
+                        </span>
+                      </div>
+
+                      <div className="mt-4 p-3 bg-gray-50 rounded-xl flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={14} className="text-gray-400" />
+                          <span className="text-sm font-medium">{formatDate(request.meeting_date)}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock size={14} className="text-gray-400" />
+                          <span className="text-sm font-medium">{request.meeting_time}</span>
+                        </div>
+                      </div>
+
+                      {request.message && (
+                        <p className="mt-3 text-sm text-gray-600 italic">"{request.message}"</p>
+                      )}
+
+                      {isIncoming && request.status === 'pending' && (
+                        <div className="mt-4 flex gap-3">
+                          <button
+                            onClick={() => handleResponse(request.id, true)}
+                            className="flex-1 bg-green-600 text-white py-2.5 rounded-xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <Check size={16} />
+                            {lang === 'fr' ? 'Accepter' : 'Accept'}
+                          </button>
+                          <button
+                            onClick={() => handleResponse(request.id, false)}
+                            className="flex-1 bg-red-100 text-red-600 py-2.5 rounded-xl font-semibold hover:bg-red-200 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <X size={16} />
+                            {lang === 'fr' ? 'Décliner' : 'Decline'}
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
 
         {activeSection === 'chat' && (
-          <div className="max-w-2xl">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-4 border-b border-gray-100 bg-gray-50">
-                <h2 className="font-bold text-gray-900">{getLabel('chat.title')}</h2>
-                <p className="text-xs text-gray-500">{lang === 'fr' ? 'Propulsé par Supabase Realtime' : 'Powered by Supabase Realtime'}</p>
+          <div className="max-w-4xl mx-auto">
+            {selectedChatUser ? (
+              <div>
+                <button
+                  onClick={() => setSelectedChatUser(null)}
+                  className="mb-4 text-sm text-primary-900 hover:underline flex items-center gap-1"
+                >
+                  ← {lang === 'fr' ? 'Retour à la liste' : 'Back to list'}
+                </button>
+                <RealtimeChat
+                  currentUserId={currentUser?.id}
+                  targetUserId={selectedChatUser.id}
+                  targetName={selectedChatUser.name}
+                  targetOrganization={selectedChatUser.org}
+                />
               </div>
-              <div className="h-80 flex items-center justify-center text-gray-400">
-                <div className="text-center">
-                  <MessageSquare size={40} className="mx-auto mb-2 opacity-30" />
-                  <p className="font-semibold text-sm">{getLabel('chat.empty_title')}</p>
-                  <p className="text-xs mt-1">{getLabel('chat.empty_desc')}</p>
+            ) : (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-4 border-b border-gray-100 bg-gray-50">
+                  <h2 className="font-bold text-gray-900">{getLabel('chat.title')}</h2>
+                  <p className="text-xs text-gray-500">{lang === 'fr' ? 'Propulsé par Supabase Realtime' : 'Powered by Supabase Realtime'}</p>
+                </div>
+                <div className="p-4">
+                  <ConversationsList
+                    currentUserId={currentUser?.id}
+                    onSelectConversation={(id, name, org) => setSelectedChatUser({ id, name, org })}
+                  />
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
 
-      {meetingModal && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setMeetingModal(null)}>
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          >
-            <h2 className="text-xl font-black text-primary-900 mb-1">{getLabel('modal.title')}</h2>
-            <p className="text-gray-500 text-sm mb-6">{getLabel('modal.with')} {meetingModal.name} ({meetingModal.acronym})</p>
-
-            <div className="mb-5">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">{getLabel('modal.select_day')}</label>
-              <div className="flex gap-2">
-                {days.map((d, i) => (
-                  <button
-                    key={d}
-                    onClick={() => setSelectedDay(d)}
-                    className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
-                      selectedDay === d ? 'bg-primary-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {lang === 'fr' ? `${i + 14}` : `${i + 14}`} {lang === 'fr' ? 'Mai' : 'May'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">{getLabel('modal.select_time')}</label>
-              <div className="grid grid-cols-4 gap-2">
-                {timeSlots.map(slot => (
-                  <button
-                    key={slot}
-                    onClick={() => setSelectedTime(slot)}
-                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
-                      selectedTime === slot ? 'bg-accent-orange text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {slot}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setMeetingModal(null)}
-                className="flex-1 border border-gray-200 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
-              >
-                {getLabel('modal.cancel')}
-              </button>
-              <button
-                onClick={handleRequestMeeting}
-                className="flex-1 bg-primary-900 text-white py-3 rounded-xl font-bold hover:bg-primary-800 transition-colors"
-              >
-                {getLabel('modal.confirm')} →
-              </button>
-            </div>
-          </motion.div>
-        </div>
+      {meetingModal && currentUser && (
+        <MeetingModal
+          match={{
+            user_id: meetingModal.user_id,
+            full_name: meetingModal.full_name,
+            organization: meetingModal.organization,
+            category: meetingModal.category,
+            domains: meetingModal.domains || [],
+            looking_for: meetingModal.looking_for,
+            offering: meetingModal.offering,
+            match_score: 0,
+            shared_domains: [],
+            badge_number: meetingModal.badge_number
+          }}
+          onClose={() => setMeetingModal(null)}
+          onSuccess={() => setActiveSection('meetings')}
+        />
       )}
     </div>
   )
