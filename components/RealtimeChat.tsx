@@ -85,7 +85,16 @@ export function RealtimeChat({ currentUserId, targetUserId, targetName, targetOr
             .eq('user_id', payload.new.sender_id)
             .single()
           
-          setMessages(prev => [...prev, { ...payload.new, sender: senderData }])
+          const newMessage: Message = {
+            id: payload.new.id,
+            sender_id: payload.new.sender_id,
+            receiver_id: payload.new.receiver_id,
+            content: payload.new.content,
+            read: false,
+            created_at: payload.new.created_at,
+            sender: senderData || undefined
+          }
+          setMessages(prev => [...prev, newMessage])
           
           if (payload.new.sender_id !== currentUserId) {
             supabase

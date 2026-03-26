@@ -1,4 +1,21 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js"
+  "/api/matchmaking/route": "app/api/matchmaking/route.js",
+  "/about/page": "app/about/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/b2b/page": "app/b2b/page.js",
+  "/api/send-email/route": "app/api/send-email/route.js",
+  "/contact/page": "app/contact/page.js",
+  "/forgot-password/page": "app/forgot-password/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/intervenants/page": "app/intervenants/page.js",
+  "/inscription/page": "app/inscription/page.js",
+  "/login/page": "app/login/page.js",
+  "/media/page": "app/media/page.js",
+  "/page": "app/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/programme/page": "app/programme/page.js",
+  "/reset-password/page": "app/reset-password/page.js",
+  "/sponsors/page": "app/sponsors/page.js",
+  "/verify/[badgeNumber]/page": "app/verify/[badgeNumber]/page.js"
 }

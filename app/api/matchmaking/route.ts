@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://eikyqsjnfydjikhugnjj.supabase.co'
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: { persistSession: false }
-})
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://eikyqsjnfydjikhugnjj.supabase.co'
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+  
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: { persistSession: false }
+  })
+}
 
 const DOMAIN_LABELS: Record<string, { fr: string; en: string }> = {
   'sante': { fr: 'Santé', en: 'Health' },
@@ -57,6 +59,7 @@ function calculateMatchScore(userDomains: string[], otherDomains: string[]): { s
 
 export async function GET(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const searchParams = request.nextUrl.searchParams
     const userId = searchParams.get('userId')
     const limit = parseInt(searchParams.get('limit') || '20')
@@ -132,6 +135,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = getSupabaseClient()
     const body = await request.json()
     const { action, userId, targetUserId, meetingDate, meetingTime, message } = body
 

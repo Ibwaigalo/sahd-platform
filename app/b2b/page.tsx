@@ -5,7 +5,7 @@ import { Calendar, MessageSquare, Users, Search, Filter, Star, Check, X, Clock, 
 import toast from 'react-hot-toast'
 import { supabase } from '@/lib/supabase'
 import { useLang } from '@/lib/lang-context'
-import { RecommendedSection, MeetingModal, MatchmakingCard } from '@/components/MatchmakingCard'
+import { RecommendedSection, MeetingModal } from '@/components/MatchmakingCard'
 import { RealtimeChat, ConversationsList } from '@/components/RealtimeChat'
 import fr from '@/messages/fr.json'
 import en from '@/messages/en.json'
@@ -268,7 +268,7 @@ export default function B2BPage() {
                 >
                   <div className="flex items-start gap-3 mb-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-900 to-primary-700 flex items-center justify-center text-white font-bold text-sm">
-                      {participant.full_name?.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                      {participant.full_name?.split(' ').map((n: string) => n[0]).slice(0, 2).join('')}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-gray-900 truncate">{participant.full_name}</h3>
@@ -284,7 +284,7 @@ export default function B2BPage() {
 
                   {participant.domains?.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mb-3">
-                      {participant.domains.slice(0, 3).map(domain => (
+                      {participant.domains.slice(0, 3).map((domain: string) => (
                         <span key={domain} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
                           {DOMAIN_LABELS[domain]?.[lang] || domain}
                         </span>
@@ -365,7 +365,7 @@ export default function B2BPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-900 to-primary-700 flex items-center justify-center text-white font-bold">
-                            {otherPerson?.full_name?.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                            {otherPerson?.full_name?.split(' ').map((n: string) => n[0]).slice(0, 2).join('')}
                           </div>
                           <div>
                             <h3 className="font-bold text-gray-900">{otherPerson?.full_name}</h3>
