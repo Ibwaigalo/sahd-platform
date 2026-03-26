@@ -13,6 +13,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+function getCategoryLabel(category: string): string {
+  const labels: Record<string, string> = {
+    visiteur: 'VISITEUR',
+    participant: 'PARTICIPANT',
+    exposant: 'EXPOSANT',
+    vip_b2b: 'VIP B2B',
+    admin: 'ADMINISTRATEUR'
+  }
+  return labels[category] || category.toUpperCase()
+}
+
 async function generateBadgePDF(badgeNumber: string, name: string, organization: string, category: string): Promise<string> {
   const qrUrl = `https://sahd-mali.org/verify/${badgeNumber}`
   const qrCodeDataUrl = await QRCode.toDataURL(qrUrl, {
@@ -20,6 +31,19 @@ async function generateBadgePDF(badgeNumber: string, name: string, organization:
     margin: 1,
     color: { dark: '#0B185F', light: '#ffffff' }
   })
+
+  const logoUrl = 'https://sahd-mali.org/logo-sahd-web.png'
+  let logoDataUrl = ''
+  try {
+    const logoResponse = await fetch(logoUrl)
+    if (logoResponse.ok) {
+      const logoBuffer = await logoResponse.arrayBuffer()
+      const logoBase64 = btoa(String.fromCharCode(...new Uint8Array(logoBuffer)))
+      logoDataUrl = `data:image/png;base64,${logoBase64}`
+    }
+  } catch (e) {
+    console.log('Logo not found, continuing without it')
+  }
 
   const doc = new jsPDF({
     orientation: 'landscape',
@@ -32,6 +56,10 @@ async function generateBadgePDF(badgeNumber: string, name: string, organization:
 
   doc.setFillColor(254, 166, 33)
   doc.rect(0, 105, 180, 15, 'F')
+
+  if (logoDataUrl) {
+    doc.addImage(logoDataUrl, 'PNG', 10, 3, 25, 18)
+  }
 
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(22)
@@ -51,12 +79,12 @@ async function generateBadgePDF(badgeNumber: string, name: string, organization:
   doc.text('BADGE', 47.5, 42, { align: 'center' })
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  doc.text('Participant', 47.5, 48, { align: 'center' })
+  doc.text(getCategoryLabel(category), 47.5, 48, { align: 'center' })
 
-  doc.setFontSize(14)
+  doc.setFontSize(12)
   doc.setFont('helvetica', 'bold')
   doc.text('Nom', 47.5, 58, { align: 'center' })
-  doc.setFontSize(8)
+  doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
   const nameParts = name.split(' ')
   if (nameParts.length > 1) {
@@ -81,6 +109,7 @@ async function generateBadgePDF(badgeNumber: string, name: string, organization:
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(6)
   doc.text('Scannez pour vérifier', 110, 75, { align: 'center' })
+  doc.setFontSize(5)
   doc.text(qrUrl, 110, 79, { align: 'center' })
 
   doc.setTextColor(11, 24, 95)
@@ -90,7 +119,7 @@ async function generateBadgePDF(badgeNumber: string, name: string, organization:
 
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  doc.text(category, 110, 93, { align: 'center' })
+  doc.text(getCategoryLabel(category), 110, 93, { align: 'center' })
 
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(9)
