@@ -125,7 +125,8 @@ export function RealtimeChat({ currentUserId, targetUserId, targetName, targetOr
     })
 
     if (error) {
-      toast.error(lang === 'fr' ? 'Erreur envoi' : 'Send error')
+      console.error('Send message error:', error)
+      toast.error(lang === 'fr' ? 'Erreur envoi: ' + error.message : 'Send error: ' + error.message)
     } else {
       setNewMessage('')
     }
