@@ -164,7 +164,11 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
         email: data.email, password: data.password,
         options: { data: { full_name: data.fullName, organization: data.organization } }
       })
-      if (authError) { toast.error(authError.message); return }
+      if (authError) { 
+        console.error('Auth error:', authError)
+        toast.error('Erreur auth: ' + authError.message); 
+        return 
+      }
       if (!authData.user) { toast.error(getLabel('error_generic')); return }
       const badgeNumber = `SAHD-2026-${selectedCat.toUpperCase().slice(0, 3)}-${Math.floor(1000 + Math.random() * 9000)}`
       const { error: profileError } = await supabase.from('profiles').insert({
