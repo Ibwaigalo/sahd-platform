@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Play, Users, ChevronDown } from 'lucide-react'
-import { mockSpeakers, mockPanels, mockSponsors } from '@/lib/mock-data'
+import { mockPanels, mockSponsors } from '@/lib/mock-data'
 import { humanitarianImages } from '@/lib/humanitarian-images'
 import CountdownTimer from '@/components/ui/CountdownTimer'
 import SponsoringContactCard from '@/components/ui/SponsoringContactCard'
@@ -30,7 +30,6 @@ export default function HomePage() {
     { icon: '🎯', title: lang === 'fr' ? 'Plaidoyer' : 'Advocacy', desc: lang === 'fr' ? 'Dialogue politique entre acteurs et autorités' : 'Policy dialogue between actors and authorities', color: 'from-primary-950 to-primary-800' },
   ]
 
-  const featuredSpeakers = mockSpeakers.filter(s => s.featured).slice(0, 4)
   const upcomingPanels = mockPanels.slice(0, 3)
 
   return (
@@ -259,38 +258,16 @@ export default function HomePage() {
 
       {/* Featured Speakers */}
       <section className="py-16 md:py-24 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
-            <div>
-              <p className="text-accent-orange font-bold text-xs uppercase tracking-widest mb-2">
-                {lang === 'fr' ? 'Intervenants' : 'Speakers'}
-              </p>
-              <h2 className="text-2xl md:text-4xl font-black text-primary-900">
-                {lang === 'fr' ? 'Nos experts invités' : 'Our invited experts'}
-              </h2>
-            </div>
-            <Link href="/intervenants" className="text-primary-700 font-semibold flex items-center gap-2 text-sm">
-              {lang === 'fr' ? 'Voir tous les intervenants' : 'View all speakers'} <ArrowRight size={16} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-            {featuredSpeakers.map((speaker, i) => (
-              <motion.div key={speaker.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="bg-gradient-to-b from-gray-50 to-white rounded-2xl p-4 md:p-6 text-center border border-gray-100 card-lift group">
-                <div className="relative inline-block mb-3">
-                  <img src={speaker.avatar} alt={speaker.name} className="w-14 h-14 md:w-20 md:h-20 rounded-2xl object-cover mx-auto" />
-                  <div className="absolute -bottom-1 -right-1 bg-accent-orange w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-                    <span className="text-white text-xs">✓</span>
-                  </div>
-                </div>
-                <h3 className="font-bold text-gray-900 text-xs md:text-base mb-1">{speaker.name}</h3>
-                <p className="text-primary-700 font-semibold text-xs mb-1 line-clamp-1">{speaker.title}</p>
-                <p className="text-gray-500 text-xs mb-2 line-clamp-1">{speaker.organization}</p>
-                <span className="bg-primary-50 text-primary-800 text-xs px-2 py-1 rounded-full font-medium">
-                  {lang === 'fr' ? speaker.domain : speaker.domain_en}
-                </span>
-              </motion.div>
-            ))}
-          </div>
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-accent-orange font-bold text-xs uppercase tracking-widest mb-2">
+            {lang === 'fr' ? 'Intervenants' : 'Speakers'}
+          </p>
+          <h2 className="text-2xl md:text-4xl font-black text-primary-900 mb-4">
+            {lang === 'fr' ? 'Nos experts invités' : 'Our invited experts'}
+          </h2>
+          <p className="text-gray-500">
+            {lang === 'fr' ? 'Les intervenants seront bientôt annoncés.' : 'Speakers will be announced soon.'}
+          </p>
         </div>
       </section>
 
