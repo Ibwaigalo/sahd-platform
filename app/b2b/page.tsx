@@ -327,6 +327,13 @@ export default function B2BPage() {
                       </button>
                     </div>
                   )}
+                  {!isVIP && (
+                    <div className="mt-3">
+                      <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg">
+                        {lang === 'fr' ? 'Espace VIP - Réservé aux exposants et VIP B2B' : 'VIP Area - For exhibitors and VIP B2B only'}
+                      </p>
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </div>
