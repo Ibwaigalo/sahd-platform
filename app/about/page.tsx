@@ -172,7 +172,7 @@ export default function AboutPage() {
                 </motion.div>
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.3 }}
                   className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                  <img src="/salon-05-communaute.jpg" alt="Communauté" className="w-full h-full object-cover" />
+                  <img src="/salon-05-femmes.jpg" alt="Femmes vulnérables" className="w-full h-full object-cover" />
                 </motion.div>
               </div>
             </div>
