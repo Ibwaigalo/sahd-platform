@@ -172,6 +172,36 @@ export async function POST(request: NextRequest) {
           </div>
         `,
       })
+
+      await resend.emails.send({
+        from: 'SAHD 2026 <admin@sahd-mali.org>',
+        to: ['admin@sahd-mali.org'],
+        subject: `🔔 Nouvelle inscription - ${name} (${organization})`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 20px;">
+            <div style="background: #0B185F; padding: 30px; border-radius: 16px 16px 0 0; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 24px;">SAHD 2026 - Admin</h1>
+            </div>
+            <div style="background: white; padding: 30px; border-radius: 0 0 16px 16px;">
+              <h2 style="color: #0B185F;">🔔 Nouvelle inscription</h2>
+              
+              <div style="background: #f0f4ff; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                <p style="margin: 4px 0; color: #374151;"><strong>Nom :</strong> ${name}</p>
+                <p style="margin: 4px 0; color: #374151;"><strong>Email :</strong> ${to}</p>
+                <p style="margin: 4px 0; color: #374151;"><strong>Organisation :</strong> ${organization}</p>
+                <p style="margin: 4px 0; color: #374151;"><strong>Catégorie :</strong> ${category}</p>
+                <p style="margin: 4px 0; color: #374151;"><strong>N° Badge :</strong> ${badgeNumber}</p>
+              </div>
+
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="https://sahd-mali.org/admin" style="background: #0B185F; color: white; padding: 14px 30px; border-radius: 10px; text-decoration: none; font-weight: bold;">
+                  Voir les inscriptions →
+                </a>
+              </div>
+            </div>
+          </div>
+        `,
+      })
     }
 
     if (type === 'validation') {
