@@ -8,8 +8,8 @@ export default function SponsoringContactCard({ compact = false }: { compact?: b
     <div className="sponsoring-contact-card p-6 md:p-8">
       <div className="relative z-10">
         <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
-          <div className="bg-accent-gold/20 p-3 rounded-xl flex-shrink-0">
-            <span className="text-3xl">🤝</span>
+          <div className="bg-accent-gold/20 p-3 rounded-xl flex-shrink-0 overflow-hidden">
+            <img src="/sponsor-hands.jpg" alt="Partenariat" className="w-14 h-14 object-cover rounded-lg" />
           </div>
           <div>
             <p className="text-white font-bold text-sm uppercase tracking-widest mb-1">
