@@ -55,7 +55,7 @@ export function RealtimeChat({ currentUserId, targetUserId, targetName, targetOr
         .from('messages')
         .select(`
           *,
-          sender:user_profiles!sender_id(full_name, organization)
+          sender:profiles!sender_id(full_name, organization)
         `)
         .or(`and(sender_id.eq.${currentUserId},receiver_id.eq.${targetUserId}),and(sender_id.eq.${targetUserId},receiver_id.eq.${currentUserId})`)
         .order('created_at', { ascending: true })
@@ -80,7 +80,7 @@ export function RealtimeChat({ currentUserId, targetUserId, targetName, targetOr
         },
         async (payload) => {
           const { data: senderData } = await supabase
-            .from('user_profiles')
+            .from('profiles')
             .select('full_name, organization')
             .eq('user_id', payload.new.sender_id)
             .single()
@@ -267,7 +267,7 @@ export function ConversationsList({ currentUserId, onSelectConversation }: Conve
       const userIds = Array.from(userMap.keys())
       if (userIds.length > 0) {
         const { data: profilesData } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .select('user_id, full_name, organization')
           .in('user_id', userIds)
 

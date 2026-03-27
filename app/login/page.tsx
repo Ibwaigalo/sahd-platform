@@ -109,7 +109,7 @@ function LoginForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t: a
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%' }}>
       <div style={{ textAlign: 'center', marginBottom: 4, display: 'flex', justifyContent: 'center' }}>
-        <img src="/logo-sahd-web.png" alt="SAHD" style={{ height: 60, width: 'auto', objectFit: 'contain', display: 'block' }} />
+        <img src="/logo-sahd-white.png" alt="SAHD" style={{ height: 60, width: 'auto', objectFit: 'contain', display: 'block' }} />
       </div>
       <h2 style={{ fontSize: '1.9rem', fontWeight: 900, color: '#1e3a8a', textAlign: 'center', margin: 0 }}>{getLabel('title')}</h2>
       <p style={{ fontSize: '0.85rem', color: '#6b7280', textAlign: 'center', margin: 0 }}>{getLabel('subtitle')}</p>
@@ -336,7 +336,7 @@ export default function LoginPage() {
           padding: '24px 20px', textAlign: 'center', color: '#fff',
         }}>
           <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 14, padding: '10px 16px', display: 'inline-block', marginBottom: 14 }}>
-            <img src="/logo-sahd-web.png" alt="SAHD" style={{ height: 44, width: 'auto', objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-sahd-white.png" alt="SAHD" style={{ height: 44, width: 'auto', objectFit: 'contain', display: 'block' }} />
           </div>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 900, margin: '0 0 6px' }}>
             {showRegister ? getLabel('register_title') : getLabel('welcome_title')}
@@ -386,7 +386,7 @@ export default function LoginPage() {
           transition: 'width 0.7s ease-in-out', flexShrink: 0,
         }}>
           <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 16, padding: '12px 20px', marginBottom: 24 }}>
-            <img src="/logo-sahd-web.png" alt="SAHD" style={{ height: 52, width: 'auto', objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-sahd-white.png" alt="SAHD" style={{ height: 52, width: 'auto', objectFit: 'contain', display: 'block' }} />
           </div>
 
           {showRegister ? (

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Calendar, MessageSquare, Users, Search, Filter, Star, Check, X, Clock, Building2, Briefcase } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -53,6 +54,7 @@ interface MeetingRequest {
 
 export default function B2BPage() {
   const { lang } = useLang()
+  const router = useRouter()
   const t = lang === 'fr' ? fr : en
   const getLabel = (key: string) => getNestedValue(t.b2b, key) || key
   
@@ -72,12 +74,12 @@ export default function B2BPage() {
     const fetchData = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        setLoading(false)
+        router.push('/login')
         return
       }
 
       const { data: profile } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
         .eq('user_id', user.id)
         .single()
@@ -85,7 +87,7 @@ export default function B2BPage() {
       setCurrentUser({ ...profile, id: user.id })
 
       const { data: participants } = await supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
         .eq('verified', true)
         .neq('user_id', user.id)
@@ -99,8 +101,8 @@ export default function B2BPage() {
         .from('meeting_requests')
         .select(`
           *,
-          requester:user_profiles!requester_id(full_name, organization),
-          target:user_profiles!target_id(full_name, organization)
+          requester:profiles!requester_id(full_name, organization),
+          target:profiles!target_id(full_name, organization)
         `)
         .or(`requester_id.eq.${user.id},target_id.eq.${user.id}`)
         .order('created_at', { ascending: false })
@@ -146,8 +148,8 @@ export default function B2BPage() {
         .from('meeting_requests')
         .select(`
           *,
-          requester:user_profiles!requester_id(full_name, organization),
-          target:user_profiles!target_id(full_name, organization)
+          requester:profiles!requester_id(full_name, organization),
+          target:profiles!target_id(full_name, organization)
         `)
         .or(`requester_id.eq.${currentUser?.id},target_id.eq.${currentUser?.id}`)
       
@@ -161,7 +163,7 @@ export default function B2BPage() {
     const matchSearch = !searchQuery || 
       p.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.organization?.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchDomain = !filterDomain || p.domains?.includes(filterDomain)
+    const matchDomain = !filterDomain || p.domain === filterDomain
     return matchSearch && matchDomain
   })
 

@@ -146,7 +146,7 @@ export default function VerifyPage() {
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <img src="/logo-sahd-web.png" alt="SAHD 2026" className="h-16 w-auto" />
+            <img src="/logo-sahd-white.png" alt="SAHD 2026" className="h-16 w-auto" />
           </div>
           <div className="inline-flex items-center gap-2 bg-accent-orange text-white px-4 py-2 rounded-full text-sm font-bold">
             {profile.verified ? (

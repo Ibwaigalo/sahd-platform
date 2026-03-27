@@ -58,13 +58,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-            <div className={scrolled ? '' : 'bg-white/90 rounded-xl px-2 py-1'}>
-              <img
-                src="/logo-sahd-web.png"
-                alt="SAHD 2026"
-                className="h-9 md:h-12 w-auto object-contain"
-              />
-            </div>
+            <img
+              src={scrolled ? '/logo-sahd-blue.png' : '/logo-sahd-white.png'}
+              alt="SAHD 2026"
+              className="h-9 md:h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Nav */}

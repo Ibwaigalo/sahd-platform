@@ -89,7 +89,7 @@ export default function ResetPasswordPage() {
         className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full"
       >
         <div className="text-center mb-8">
-          <img src="/logo-sahd-web.png" alt="SAHD 2026" className="h-16 w-auto object-contain mx-auto mb-4" />
+          <img src="/logo-sahd-white.png" alt="SAHD 2026" className="h-16 w-auto object-contain mx-auto mb-4" />
           <h1 className="text-2xl font-black text-primary-900">Nouveau mot de passe</h1>
           <p className="text-gray-500 text-sm mt-1">Choisissez un nouveau mot de passe sécurisé</p>
         </div>
