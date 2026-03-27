@@ -3,12 +3,13 @@ import { createClient } from '@supabase/supabase-js'
 
 function getSupabaseClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://eikyqsjnfydjikhugnjj.supabase.co'
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   
-  console.log('Service key present:', !!supabaseServiceKey)
-  console.log('Key starts with:', supabaseServiceKey?.substring(0, 20))
+  if (!serviceKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY not configured')
+  }
   
-  return createClient(supabaseUrl, supabaseServiceKey, {
+  return createClient(supabaseUrl, serviceKey, {
     auth: { persistSession: false }
   })
 }
