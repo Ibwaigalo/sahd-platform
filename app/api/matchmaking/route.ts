@@ -159,10 +159,11 @@ export async function POST(request: NextRequest) {
           .single()
 
         if (error) {
+          console.error('Meeting request insert error:', error)
           if (error.code === '23505') {
             return NextResponse.json({ error: 'Ce créneau est déjà réservé' }, { status: 409 })
           }
-          return NextResponse.json({ error: error.message }, { status: 500 })
+          return NextResponse.json({ error: error.message, details: error }, { status: 500 })
         }
 
         return NextResponse.json({ success: true, meetingRequest: data })
