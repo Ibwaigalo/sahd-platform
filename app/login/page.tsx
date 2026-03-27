@@ -167,11 +167,12 @@ function RegisterForm({ onSwitch, t, getLabel, lang }: { onSwitch: () => void, t
       if (authError) { toast.error(authError.message); return }
       if (!authData.user) { toast.error(getLabel('error_generic')); return }
       const badgeNumber = `SAHD-2026-${selectedCat.toUpperCase().slice(0, 3)}-${Math.floor(1000 + Math.random() * 9000)}`
-      await supabase.from('profiles').insert({
+      const { error: profileError } = await supabase.from('profiles').insert({
         user_id: authData.user.id, full_name: data.fullName, organization: data.organization,
         email: data.email, phone: data.phone, category: selectedCat,
         domain: data.domain, country: data.country, badge_number: badgeNumber, verified: false,
       })
+      if (profileError) { toast.error('Erreur: ' + profileError.message); return }
       try {
         await fetch('/api/send-email', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
