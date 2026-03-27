@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Play, Users, ChevronDown } from 'lucide-react'
-import { mockPanels, mockSponsors } from '@/lib/mock-data'
+import { mockSponsors } from '@/lib/mock-data'
 import { humanitarianImages } from '@/lib/humanitarian-images'
 import CountdownTimer from '@/components/ui/CountdownTimer'
 import SponsoringContactCard from '@/components/ui/SponsoringContactCard'
@@ -29,8 +29,6 @@ export default function HomePage() {
     { icon: '💡', title: lang === 'fr' ? 'Innovation' : 'Innovation', desc: lang === 'fr' ? "Solutions technologiques pour l'humanitaire" : 'Technological solutions for humanitarian action', color: 'from-accent-orange to-amber-500' },
     { icon: '🎯', title: lang === 'fr' ? 'Plaidoyer' : 'Advocacy', desc: lang === 'fr' ? 'Dialogue politique entre acteurs et autorités' : 'Policy dialogue between actors and authorities', color: 'from-primary-950 to-primary-800' },
   ]
-
-  const upcomingPanels = mockPanels.slice(0, 3)
 
   return (
     <div className="overflow-x-hidden w-full max-w-[100vw]">
@@ -193,65 +191,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Programme Teaser */}
+      {/* Programme Coming Soon */}
       <section className="py-16 md:py-24 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
-            <div>
-              <p className="text-accent-orange font-bold text-xs uppercase tracking-widest mb-2">Programme</p>
-              <h2 className="text-2xl md:text-4xl font-black text-primary-900">
-                {lang === 'fr' ? 'Panels à ne pas manquer' : 'Must-see panels'}
-              </h2>
+          <div className="text-center">
+            <p className="text-accent-orange font-bold text-xs uppercase tracking-widest mb-2">Programme</p>
+            <h2 className="text-2xl md:text-4xl font-black text-primary-900 mb-4">
+              {lang === 'fr' ? 'Panels & Ateliers' : 'Panels & Workshops'}
+            </h2>
+            <div className="bg-gradient-to-br from-primary-50 to-blue-50 rounded-3xl p-8 md:p-12 border border-primary-100 max-w-2xl mx-auto">
+              <div className="text-6xl mb-4">🔔</div>
+              <h3 className="text-xl font-black text-primary-900 mb-3">
+                {lang === 'fr' ? 'Programme en cours de finalisation' : 'Programme being finalized'}
+              </h3>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                {lang === 'fr'
+                  ? "Le programme officiel du SAHD-Mali 2026 sera bientôt disponible. Restez connectés !"
+                  : "The official SAHD-Mali 2026 programme will be available soon. Stay tuned!"}
+              </p>
+              <Link href="/programme" className="inline-flex items-center gap-2 bg-primary-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-800 transition-colors">
+                {lang === 'fr' ? 'Découvrir le programme' : 'Discover the programme'} <ArrowRight size={16} />
+              </Link>
             </div>
-            <Link href="/programme" className="text-primary-700 font-semibold flex items-center gap-2 text-sm">
-              {lang === 'fr' ? 'Voir tout le programme' : 'View full programme'} <ArrowRight size={16} />
-            </Link>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4 md:gap-5">
-            {upcomingPanels.map((panel, i) => (
-              <motion.div key={panel.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden card-lift">
-                <div className="h-2" style={{ background: panel.color }} />
-                <div className="p-4 md:p-5">
-                  <div className="flex flex-wrap justify-between items-start mb-3 gap-2">
-                    <span className="bg-primary-50 text-primary-800 text-xs font-bold px-2 py-1 rounded-full">
-                      {lang === 'fr' ? 'Jour' : 'Day'} {panel.day} · {panel.startTime}
-                    </span>
-                    <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
-                      {lang === 'fr' ? panel.category : panel.category_en}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-gray-900 text-sm leading-snug mb-2">
-                    {lang === 'fr' ? panel.title : panel.title_en}
-                  </h3>
-                  <p className="text-gray-500 text-xs mb-4 leading-relaxed line-clamp-2">
-                    {lang === 'fr' ? panel.description : panel.description_en}
-                  </p>
-                  <div className="mb-3">
-                    <div className="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>{lang === 'fr' ? 'Places disponibles' : 'Available seats'}</span>
-                      <span className={panel.registered >= panel.capacity ? 'text-red-500 font-bold' : 'text-accent-orange font-bold'}>
-                        {panel.registered >= panel.capacity
-                          ? (lang === 'fr' ? 'Complet' : 'Full')
-                          : `${panel.capacity - panel.registered} ${lang === 'fr' ? 'restantes' : 'remaining'}`}
-                      </span>
-                    </div>
-                    <div className="capacity-bar">
-                      <div className="capacity-fill" style={{ width: `${Math.min((panel.registered / panel.capacity) * 100, 100)}%`, background: panel.registered >= panel.capacity ? '#ef4444' : '#FEA621' }} />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-gray-400 text-xs">
-                      <Users size={12} /> {panel.registered}/{panel.capacity}
-                    </div>
-                    <Link href={`/programme#${panel.id}`} className={`text-xs font-bold px-3 py-2 rounded-xl transition-colors ${panel.registered >= panel.capacity ? 'bg-gray-100 text-gray-500' : 'bg-primary-900 text-white hover:bg-primary-700'}`}>
-                      {panel.registered >= panel.capacity
-                        ? (lang === 'fr' ? "Liste d'attente" : 'Waitlist')
-                        : (lang === 'fr' ? 'Réserver' : 'Book')}
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
