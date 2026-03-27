@@ -1,42 +1,42 @@
 export const humanitarianImages = {
   hero: [
-    'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=1920&h=1080&fit=crop',
-    'https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?w=1920&h=1080&fit=crop',
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=1080&fit=crop',
+    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&h=1080&fit=crop',
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1920&h=1080&fit=crop',
+    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1920&h=1080&fit=crop',
   ],
   heroLocal: '/hero-bg.jpg',
   crisis: [
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&h=600&fit=crop',
     'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop',
   ],
   volunteers: [
-    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop',
     'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop',
     'https://images.unsplash.com/photo-1584515933487-779824d29309?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600&h=400&fit=crop',
   ],
   aidDistribution: [
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=400&fit=crop',
     'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop',
-  ],
-  children: [
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&h=300&fit=crop',
-  ],
-  medical: [
-    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop',
-  ],
-  community: [
     'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=400&fit=crop',
     'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop',
   ],
+  children: [
+    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop',
+  ],
+  medical: [
+    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop',
+  ],
+  community: [
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop',
+  ],
   food: [
     'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=400&fit=crop',
   ],
   conference: [
     'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop',
@@ -47,12 +47,25 @@ export const humanitarianImages = {
     'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop',
   ],
   africa: [
-    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&h=600&fit=crop&crop=top',
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop&crop=top',
-    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop&crop=top',
-    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop&crop=top',
-    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&h=600&fit=crop&crop=top',
-    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800&h=600&fit=crop&crop=top',
+    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&h=600&fit=crop',
+  ],
+  mali: [
+    'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1529108190281-9a4f620bc2d8?w=800&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop',
+  ],
+  womenChildren: [
+    'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=600&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=800&fit=crop',
   ],
 }
 
