@@ -46,7 +46,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE TRIGGER on_verification_update
-  AFTER UPDATE OF verified ON user_profiles
+  AFTER UPDATE OF verified ON profiles
   FOR EACH ROW
   WHEN (NEW.verified = TRUE AND (OLD.verified = FALSE OR OLD.verified IS NULL))
   EXECUTE FUNCTION send_badge_email_on_verification();
@@ -65,9 +65,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS on_verification_log ON user_profiles;
+DROP TRIGGER IF EXISTS on_verification_log ON profiles;
 CREATE TRIGGER on_verification_log
-  AFTER UPDATE OF verified ON user_profiles
+  AFTER UPDATE OF verified ON profiles
   FOR EACH ROW
   WHEN (NEW.verified = TRUE AND (OLD.verified = FALSE OR OLD.verified IS NULL))
   EXECUTE FUNCTION log_verification_event();

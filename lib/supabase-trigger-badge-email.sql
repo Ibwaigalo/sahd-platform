@@ -30,10 +30,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Create the trigger on user_profiles table
-DROP TRIGGER IF EXISTS on_verification_update ON user_profiles;
+-- Create the trigger on profiles table
+DROP TRIGGER IF EXISTS on_verification_update ON profiles;
 CREATE TRIGGER on_verification_update
-  AFTER UPDATE OF verified ON user_profiles
+  AFTER UPDATE OF verified ON profiles
   FOR EACH ROW
   EXECUTE FUNCTION send_badge_email_on_verification();
 

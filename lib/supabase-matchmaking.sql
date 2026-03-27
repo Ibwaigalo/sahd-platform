@@ -47,20 +47,20 @@ CREATE TABLE IF NOT EXISTS meeting_requests (
 -- UPDATE EXISTING TABLES
 -- ============================================
 
--- Add domain field to user_profiles (if not exists)
+-- Add domain field to profiles (if not exists)
 DO $$ 
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'user_profiles' AND column_name = 'domain') THEN
-    ALTER TABLE user_profiles ADD COLUMN domain TEXT;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'domain') THEN
+    ALTER TABLE profiles ADD COLUMN domain TEXT;
   END IF;
-  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'user_profiles' AND column_name = 'domains') THEN
-    ALTER TABLE user_profiles ADD COLUMN domains TEXT[];
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'domains') THEN
+    ALTER TABLE profiles ADD COLUMN domains TEXT[];
   END IF;
-  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'user_profiles' AND column_name = 'looking_for') THEN
-    ALTER TABLE user_profiles ADD COLUMN looking_for TEXT;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'looking_for') THEN
+    ALTER TABLE profiles ADD COLUMN looking_for TEXT;
   END IF;
-  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'user_profiles' AND column_name = 'offering') THEN
-    ALTER TABLE user_profiles ADD COLUMN offering TEXT;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'offering') THEN
+    ALTER TABLE profiles ADD COLUMN offering TEXT;
   END IF;
 END $$;
 
@@ -111,7 +111,7 @@ CREATE INDEX IF NOT EXISTS idx_matchmaking_recommendations_user_id ON matchmakin
 CREATE INDEX IF NOT EXISTS idx_meeting_requests_requester ON meeting_requests(requester_id);
 CREATE INDEX IF NOT EXISTS idx_meeting_requests_target ON meeting_requests(target_id);
 CREATE INDEX IF NOT EXISTS idx_meeting_requests_status ON meeting_requests(status);
-CREATE INDEX IF NOT EXISTS idx_user_profiles_domains ON user_profiles USING GIN(domains);
+CREATE INDEX IF NOT EXISTS idx_profiles_domains ON profiles USING GIN(domains);
 
 -- ============================================
 -- DOMAINS LIST (reference)

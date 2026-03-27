@@ -5,7 +5,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- User Profiles
-CREATE TABLE IF NOT EXISTS user_profiles (
+CREATE TABLE IF NOT EXISTS profiles (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   full_name TEXT NOT NULL,
@@ -124,19 +124,19 @@ CREATE TABLE IF NOT EXISTS contact_submissions (
 );
 
 -- Row Level Security Policies
-ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE panel_reservations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE b2b_meetings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
 -- User profiles: users can read their own profile
-CREATE POLICY "Users can view own profile" ON user_profiles
+CREATE POLICY "Users can view own profile" ON profiles
   FOR SELECT USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can update own profile" ON user_profiles
+CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can insert own profile" ON user_profiles
+CREATE POLICY "Users can insert own profile" ON profiles
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Panel reservations
@@ -168,7 +168,7 @@ ALTER PUBLICATION supabase_realtime ADD TABLE messages;
 ALTER PUBLICATION supabase_realtime ADD TABLE b2b_meetings;
 
 -- Indexes for performance
-CREATE INDEX idx_user_profiles_user_id ON user_profiles(user_id);
+CREATE INDEX idx_profiles_user_id ON profiles(user_id);
 CREATE INDEX idx_panel_reservations_user_id ON panel_reservations(user_id);
 CREATE INDEX idx_panel_reservations_panel_id ON panel_reservations(panel_id);
 CREATE INDEX idx_messages_receiver_id ON messages(receiver_id);

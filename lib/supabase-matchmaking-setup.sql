@@ -2,10 +2,10 @@
 -- MATCHMAKING SYSTEM - Exécutez ce SQL dans Supabase SQL Editor
 -- ============================================
 
--- 1. Ajouter les colonnes manquantes à user_profiles
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS domains TEXT[];
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS looking_for TEXT;
-ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS offering TEXT;
+-- 1. Ajouter les colonnes manquantes à profiles
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS domains TEXT[];
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS looking_for TEXT;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS offering TEXT;
 
 -- 2. Créer la table des demandes de RDV
 CREATE TABLE IF NOT EXISTS meeting_requests (
@@ -43,7 +43,7 @@ CREATE POLICY "Users can update their meeting requests" ON meeting_requests
 ALTER PUBLICATION supabase_realtime ADD TABLE meeting_requests;
 
 -- 6. Ajouter les index pour les performances
-CREATE INDEX IF NOT EXISTS idx_user_profiles_domains ON user_profiles USING GIN(domains);
+CREATE INDEX IF NOT EXISTS idx_profiles_domains ON profiles USING GIN(domains);
 CREATE INDEX IF NOT EXISTS idx_meeting_requests_requester ON meeting_requests(requester_id);
 CREATE INDEX IF NOT EXISTS idx_meeting_requests_target ON meeting_requests(target_id);
 CREATE INDEX IF NOT EXISTS idx_meeting_requests_status ON meeting_requests(status);
