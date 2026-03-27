@@ -143,10 +143,10 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {[...humanitarianImages.volunteers, ...humanitarianImages.crisis].slice(0, 8).map((img, i) => (
+            {['/home-01.jpg', '/home-02.jpg', '/home-03.jpg', '/home-04.jpg'].map((img, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
                 className="relative overflow-hidden rounded-2xl aspect-square group">
-                <img src={img} alt={`Humanitarian action ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src={img} alt={`SAHD ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </motion.div>
             ))}
