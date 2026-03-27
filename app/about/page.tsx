@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import { eventInfo, mockNGOs } from '@/lib/mock-data'
+import { eventInfo } from '@/lib/mock-data'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useLang } from '@/lib/lang-context'
@@ -329,33 +329,24 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* NGOs */}
+      {/* NGOs - Coming Soon */}
       <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <p className="text-accent-orange font-bold text-sm uppercase tracking-widest mb-2">{t.about.ngos_label}</p>
-              <h2 className="text-3xl font-black text-primary-900">{t.about.ngos_title}</h2>
-            </div>
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-accent-orange font-bold text-sm uppercase tracking-widest mb-2">{t.about.ngos_label}</p>
+          <h2 className="text-3xl font-black text-primary-900 mb-8">{t.about.ngos_title}</h2>
+          <div className="bg-gradient-to-br from-primary-50 to-blue-50 rounded-3xl p-12 border border-primary-100">
+            <div className="text-6xl mb-6">🔔</div>
+            <h3 className="text-2xl font-black text-primary-900 mb-4">
+              {lang === 'fr' ? 'Annonce imminente' : 'Coming soon'}
+            </h3>
+            <p className="text-lg text-gray-600 leading-relaxed max-w-xl mx-auto">
+              {lang === 'fr' 
+                ? "Les exposants confirmés seront annoncés prochainement. Restez connectés pour découvrir les organisations qui participeront au SAHD-Mali 2026."
+                : "Confirmed exhibitors will be announced soon. Stay tuned to discover the organizations that will participate in SAHD-Mali 2026."}
+            </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {mockNGOs.map((ngo, i) => (
-              <motion.div key={ngo.id} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className="bg-gray-50 rounded-2xl p-5 text-center border border-gray-100 hover:border-primary-200 hover:shadow-md transition-all relative overflow-hidden group">
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <img src={humanitarianImages.community[i % humanitarianImages.community.length]} alt="" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-primary-900/80" />
-                </div>
-                <div className="relative z-10">
-                  <div className="text-4xl mb-3">{ngo.logo}</div>
-                  <div className="font-black text-primary-900 text-lg">{ngo.acronym}</div>
-                  <div className="text-gray-500 text-xs mt-1">{lang === 'fr' ? ngo.domain : ngo.domain_en}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/inscription?cat=exposant" className="inline-flex items-center gap-2 border-2 border-primary-900 text-primary-900 px-8 py-3.5 rounded-2xl font-bold hover:bg-primary-50 transition-colors">
+          <div className="mt-8">
+            <Link href="/inscription?cat=exposant" className="inline-flex items-center gap-2 bg-primary-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-primary-800 transition-colors">
               {t.about.expose_ngo} <ArrowRight size={18} />
             </Link>
           </div>
