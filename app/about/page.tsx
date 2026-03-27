@@ -48,7 +48,7 @@ export default function AboutPage() {
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
               className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
-                <img src={humanitarianImages.volunteers[0]} alt="Humanitaire au Mali" className="w-full h-full object-cover" />
+                <img src="/salon-01-intro.webp" alt="Humanitaire au Mali" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -bottom-4 -left-4 bg-accent-orange text-white px-4 py-2 rounded-xl font-bold shadow-lg">
                 7,1M {lang === 'fr' ? 'personnes aidées' : 'people assisted'}
@@ -62,7 +62,7 @@ export default function AboutPage() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
               className="relative order-2 lg:order-1">
               <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
-                <img src={humanitarianImages.volunteers[1]} alt="Conflits au Mali" className="w-full h-full object-cover" />
+                <img src="/salon-02-conflits.webp" alt="Conflits au Mali" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -top-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg">
                 378K {lang === 'fr' ? 'déplacés' : 'displaced'}
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}
               className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
-                <img src={humanitarianImages.volunteers[2]} alt="Insécurité alimentaire" className="w-full h-full object-cover" />
+                <img src="/salon-03-climat.webp" alt="Insécurité alimentaire" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -bottom-4 -left-4 bg-amber-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg">
                 1,3M {lang === 'fr' ? 'en insécurité alimentaire' : 'in food insecurity'}
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}
               className="relative order-2 lg:order-1">
               <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
-                <img src={humanitarianImages.volunteers[3]} alt="Services au Mali" className="w-full h-full object-cover" />
+                <img src="/salon-04-services.jpg" alt="Services au Mali" className="w-full h-full object-cover" />
               </div>
             </motion.div>
             <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-white/50 order-1 lg:order-2">
@@ -160,19 +160,19 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 gap-4">
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1 }}
                   className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                  <img src={humanitarianImages.africa[0]} alt="Enfants vulnérables" className="w-full h-full object-cover" />
+                  <img src="/salon-05-enfants.jpg" alt="Enfants vulnérables" className="w-full h-full object-cover" />
                 </motion.div>
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.1 }}
                   className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                  <img src={humanitarianImages.africa[1]} alt="Femmes vulnérables" className="w-full h-full object-cover" />
+                  <img src="/salon-05-sante.jpg" alt="Santé" className="w-full h-full object-cover" />
                 </motion.div>
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }}
                   className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                  <img src={humanitarianImages.africa[2]} alt="Santé" className="w-full h-full object-cover" />
+                  <img src="/salon-05-communaute.jpg" alt="Communauté" className="w-full h-full object-cover" />
                 </motion.div>
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.3 }}
                   className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                  <img src={humanitarianImages.africa[3]} alt="Communauté" className="w-full h-full object-cover" />
+                  <img src="/salon-05-communaute.jpg" alt="Communauté" className="w-full h-full object-cover" />
                 </motion.div>
               </div>
             </div>
@@ -226,7 +226,7 @@ export default function AboutPage() {
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.6 }}
               className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
-                <img src={humanitarianImages.africa[4]} alt="SAHD 2026" className="w-full h-full object-cover" />
+                <img src="/salon-06-sahd.jpg" alt="SAHD 2026" className="w-full h-full object-cover" />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-primary-900/60 to-transparent rounded-3xl flex items-end p-6">
                 <div className="text-white">
